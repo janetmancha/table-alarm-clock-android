@@ -31,11 +31,8 @@ public class MainActivity extends AppCompatActivity {
     //Elementos UI
     private TextView textViewHour;
     private TextView textViewMinutes;
-    private TextView textViewSeconds;
     private TextView textViewColon;
     private TextView textViewDate;
-    private EditText editTextAlarm2;
-    private ImageButton buttonAlarm2;
 
     Timer timer = new Timer();
     SimpleDateFormat timeFormat;
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
-            int seconds = calendar.get(Calendar.SECOND);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -88,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
             textViewHour =(TextView) findViewById(R.id.textViewHour);
             textViewMinutes = (TextView) findViewById(R.id.textViewMinutes);
-            textViewSeconds = (TextView) findViewById(R.id.textViewSeconds);
             textViewColon = (TextView) findViewById(R.id.textViewColon);
             textViewDate = (TextView) findViewById(R.id.textViewDate);
 
@@ -98,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
             textViewHour.setText(FormatTwoDigits(hours));
             textViewMinutes.setText(FormatTwoDigits(minutes));
-            textViewSeconds.setText(FormatTwoDigits(seconds));
             textViewDate.setText(timeFormat.format(calendar.getTime()));
 
             if (points == false){
@@ -141,32 +135,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        editTextAlarm2 = (EditText) findViewById(R.id.editTextAlarm2);
-        buttonAlarm2 = (ImageButton) findViewById(R.id.imageButtonAlarm2);
-
-
-        buttonAlarm2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (activatedAlarm2 == false){
-                    buttonAlarm2.setBackgroundColor(Color.GREEN);
-                    activatedAlarm2 = true;
-                }
-                else{
-                    buttonAlarm2.setBackgroundColor(Color.GRAY);
-                    activatedAlarm2 = false;
-                }
-
-            }
-        });
-
-
-
     }
 
 
-    //funcion para poner dos digitos en la hora, minutos y segundos
+    //funcion para poner dos digitos en la hora, minutos
     public String FormatTwoDigits (int num) {
 //        if (num >=0 && num<=9){
 //            return "0"+num;

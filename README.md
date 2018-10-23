@@ -2,6 +2,10 @@
 
 ## CHANGE LOG
 
+- Implementar icono enchufado: que parpadee cada medio segundo si el movil esta desenchufado.
+- poner en negrita la fecha.
+- Buscar tamaño banner.
+- Buscar iconos para layout (campanas para alarmas, flechas de aumentar y disminuir, brocha o pincel, candado,enchufe).
 - Poner icono en la aplicación.
 - Buscar icono de la aplicacion.
 - Crear repositorio de código fuente en Github.
@@ -12,14 +16,10 @@
 
 
 ## ROADMAP
-- poner iconos campanas; app:srcCompat="@drawable/ic_bell_off_foreground"
-- poner en negrita la fecha.
-- Buscar iconos para layout (campanas para alarmas, flechas de aumentar y disminuir, brocha o pincel, candado,enchufe).
-- Buscar tamaño banner.
+
 - Hacer Layout completo.
 - Hacer Layout solo hora.
-- Al tocar la hora cambie a formato 24 o 12 horas.
-- Implementar icono enchufado que paradee cada medio segundo.
+- Al tocar la hora cambie a formato 24 o 12 horas.//PTE COMPROBAR QUE FUNCIONA A LAS DOCE
 - 2 Alarmas:
     - Implementar que los iconos de la alarma cambien según si están activados o no (campana o campana tachada).
     - Los minutos y las horas deben parpadear cuando se haya pinchado en ellos para indicar que están a la espera de ser modificados.

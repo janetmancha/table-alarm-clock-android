@@ -18,6 +18,7 @@
         android:includeFontPadding="false"
         android:text="21"
         android:textSize="220sp"
+        android:clickable="false"
         app:layout_constraintEnd_toStartOf="@+id/textViewColon"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,6 +30,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:fontFamily="sans-serif"
         android:includeFontPadding="false"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
@@ -42,6 +44,7 @@
         android:id="@+id/textViewMinutes"
         android:layout_width="wrap_content"
         android:layout_height="220sp"
+        android:fontFamily="sans-serif"
         android:includeFontPadding="false"
         android:text="35"
         android:textSize="220sp"
@@ -52,10 +55,12 @@
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewColon" />
@@ -66,7 +71,7 @@
         android:layout_height="40dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_popup_reminder" />
+        app:srcCompat="@mipmap/ic_bell_off_foreground" />
 
     <ImageView
         android:id="@+id/imageViewAlarm2"
@@ -74,7 +79,7 @@
         android:layout_height="40dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_popup_reminder" />
+        app:srcCompat="@mipmap/ic_bell_off_foreground" />
 
     <ImageView
         android:id="@+id/imageViewPlug"
@@ -82,7 +87,7 @@
         android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@mipmap/ic_plug_foreground" />
 
     <TextView
         android:id="@+id/textViewAlarm1Hour"
@@ -145,12 +150,12 @@
         app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2" />
 
     <ImageView
-        android:id="@+id/imageViewLock"
+        android:id="@+id/imageViewPadlock"
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_secure" />
+        app:srcCompat="@mipmap/ic_padlock_block_foreground" />
 
     <TextView
         android:id="@+id/textViewbanner"
@@ -170,44 +175,66 @@
         android:id="@+id/imageViewEditColor"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewbanner"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewOk"
+        app:srcCompat="@mipmap/ic_palette_colors_foreground" />
 
     <ImageView
         android:id="@+id/imageViewClock"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+        app:layout_constraintStart_toEndOf="@+id/textViewbanner"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewOk"
+        app:srcCompat="@mipmap/ic_clock_foreground" />
 
     <ImageView
         android:id="@+id/imageViewOk"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="@+id/imageViewAlarm2"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/checkbox_on_background" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewColon"
+        app:srcCompat="@mipmap/ic_check_foreground" />
 
     <ImageView
         android:id="@+id/imageViewIncrease"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
         app:layout_constraintEnd_toStartOf="@+id/imageViewOk"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Minutes"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewColon"
+        app:srcCompat="@mipmap/ic_icon_increase_foreground" />
 
     <ImageView
         android:id="@+id/imageViewDecrease"
@@ -217,10 +244,26 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes"
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"
-        app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewColon"
+        app:srcCompat="@mipmap/ic_decrease_foreground" />
+
+    <TextView
+        android:id="@+id/textViewAMPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="25sp"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewMinutes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewMinutes" />
 
 
 </android.support.constraint.ConstraintLayout>

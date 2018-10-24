@@ -54,13 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean points = false;
     boolean padlockClosed = true;
-    boolean alarm1Activate = false;
-    boolean alarm2Activate = true;
-
-
-    boolean alarmModifying= false;
-    boolean alarmModifyingFinish = true;
-
+    boolean alarm1Activate;
+    boolean alarm2Activate;
 
     int formatHour = 24;
     int am_pm;
@@ -175,15 +170,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            if (alarmModifying == true && padlockClosed == false ){
+            if (textViewAlarmModifiying != null){
                 if (textViewAlarmModifiying.getVisibility() == View.VISIBLE){
                     textViewAlarmModifiying.setVisibility(View.INVISIBLE);
                 } else {
                     textViewAlarmModifiying.setVisibility(View.VISIBLE);
                 }
-            } else {
-                textViewAlarmModifiying.setVisibility(View.VISIBLE);
             }
+
         }};
 
 
@@ -221,8 +215,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         textViewHour =(TextView) findViewById(R.id.textViewHour);
         textViewMinutes = (TextView) findViewById(R.id.textViewMinutes);
         textViewColon = (TextView) findViewById(R.id.textViewColon);
@@ -239,10 +231,6 @@ public class MainActivity extends AppCompatActivity {
         imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
-
-
-        textViewAlarmModifiying = textViewAlarm1Hour;
-
 
         textViewHour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,8 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 } else { //candado abierto
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_block_foreground);
                     padlockClosed = true;
-                    //alarmModifying = false;
-
+                    CancelEdit();
                     //textViewHour.setClickable(false);
                 }
 
@@ -346,26 +333,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //funcion para que parpadee el textview a modificar de las alarmas
-    public void ClickModifiyingAlarm (TextView textViewMofifyingAlarm) {
-
-        if (alarmModifyingFinish == false) {
-            alarmModifyingFinish = true;
-            alarmModifying = false;
-        }else {
-            alarmModifyingFinish= false;
-            alarmModifying = true;
-        }
-
-        if (padlockClosed == false && alarmModifyingFinish == false) { //candado esta abierto, alarma a la espera de modificacion
-            textViewAlarmModifiying = textViewMofifyingAlarm;
-
-            imageViewIncrease.setVisibility(View.VISIBLE);
-            imageViewDecrease.setVisibility(View.VISIBLE);
-            imageViewOk.setVisibility(View.VISIBLE);
-        }
-
+    public void CancelEdit () {
+        textViewAlarmModifiying.setVisibility(View.VISIBLE);
+        textViewAlarmModifiying = null;
+        imageViewIncrease.setVisibility(View.INVISIBLE);
+        imageViewDecrease.setVisibility(View.INVISIBLE);
+        imageViewOk.setVisibility(View.INVISIBLE);
     }
+
+
+    //funcion para que parpadee el textview a modificar de las alarmas
+    public void ClickModifiyingAlarm (TextView textView) {
+        if (padlockClosed == false) { //candado esta abierto,
+            if (textViewAlarmModifiying == null) {
+                textViewAlarmModifiying = textView;
+                imageViewIncrease.setVisibility(View.VISIBLE);
+                imageViewDecrease.setVisibility(View.VISIBLE);
+                imageViewOk.setVisibility(View.VISIBLE);
+            } else if (textViewAlarmModifiying == textView) {
+                CancelEdit();
+            }
+        }
+}
 
 
 

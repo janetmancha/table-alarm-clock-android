@@ -2,8 +2,10 @@
 
 ## CHANGE LOG
 
+- Alarmas: Los minutos y las horas parpadean cuando se pinche en ellos para indicar que están a la espera de ser modificados, en ese momento apareceran
+  los botones de aumentar, disminuir y check, si no estan en modo modificar los iconos de disminuir, aumentar y check desapareceran.
 - Al tocar la hora cambie a formato 24 o 12 horas.
-- 2 Alarmas: Implementar que los iconos de la alarma cambien según si están activados o no (campana o campana tachada).
+- Alarmas: Implementar que los iconos de la alarma cambien según si están activados o no (campana o campana tachada).
 - Implementar icono enchufado: que parpadee cada medio segundo si el movil esta desenchufado.
 - poner en negrita la fecha.
 - Buscar tamaño banner.
@@ -22,12 +24,9 @@
 - Hacer Layout completo.
 - Hacer Layout solo hora.
 - 2 Alarmas:
-    - Los minutos y las horas deben parpadear cuando se haya pinchado en ellos para indicar que están a la espera de ser modificados, en ese momento apareceran
-        los botones de aumentar, disminuir y check, si no estan en modo modificar los iconos de disminuir, aumentar y check desapareceran
-    - Implementar el aumento y disminucion de horas y minutos de las alarmas
-    - Cuando usuario pinche nuevamente en la hora y en los minutos dejaran de parpadear y se ocultaran los iconos para modificar 
-        los minutos o las horas (iconos aumentar y disminuir).
+    - Implementar el aumento y disminucion de horas y minutos de las alarmas.
     - Poner la alarma con melodía y que suene a la hora elegida si esta activada.
+    - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
 - Implementar opción  de bloqueo.

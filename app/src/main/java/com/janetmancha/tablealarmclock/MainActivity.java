@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     int formatHour = 24;
     int am_pm;
 
-    TextView textViewAlarmModifiying;
+    TextView textViewAlarmEdit;
 
 
 
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 textViewColon.setVisibility(TextView.INVISIBLE);
                 points = false;
             }
-
             //textViewTime = (TextView) findViewById(R.id.textViewTime);
             //textViewTime.setText(timeString);
             //textViewTime.setText(date.getSeconds() + "");
@@ -170,14 +168,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            if (textViewAlarmModifiying != null){
-                if (textViewAlarmModifiying.getVisibility() == View.VISIBLE){
-                    textViewAlarmModifiying.setVisibility(View.INVISIBLE);
+            if (textViewAlarmEdit != null){
+                if (textViewAlarmEdit.getVisibility() == View.VISIBLE){
+                    textViewAlarmEdit.setVisibility(View.INVISIBLE);
                 } else {
-                    textViewAlarmModifiying.setVisibility(View.VISIBLE);
+                    textViewAlarmEdit.setVisibility(View.VISIBLE);
                 }
             }
-
         }};
 
 
@@ -227,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm1Hour = (TextView)findViewById(R.id.textViewAlarm1Hour);
         textViewAlarm1Minutes = (TextView) findViewById(R.id.textViewAlarm1Minutes);
         textViewAlarm2Hour = (TextView) findViewById(R.id.textViewAlarm2Hour);
-        textViewAlarm2Minutes = (TextView) findViewById(R.id.textViewAlarm2Minutes);
+        textViewAlarm2Minutes = (TextView) findViewById(R.id.textViewAlarm2Hour);
         imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
@@ -240,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                     if (formatHour == 12) {
                         formatHour = 24;
                         textViewAMPM.setVisibility(View.INVISIBLE);
-                    } else {
+                    } else { //candado cerrado
                         formatHour = 12;
                         textViewAMPM.setVisibility(View.VISIBLE);
                     }
@@ -253,22 +250,14 @@ public class MainActivity extends AppCompatActivity {
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 if (padlockClosed == true) { //candato cerrado
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_open_foreground);
                     padlockClosed = false;
-
-                    //textViewHour.setClickable(true);
-
                 } else { //candado abierto
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_block_foreground);
                     padlockClosed = true;
                     CancelEdit();
-                    //textViewHour.setClickable(false);
                 }
-
             }
         });
 
@@ -330,43 +319,112 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imageViewOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CancelEdit();
+            }
+        });
+
+        imageViewIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlarmIncrease();
+            }
+        });
+
+        imageViewDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlarmDecrease();
+            }
+        });
 
     }
 
+    //funcion cancelar opcion editar alarmas
     public void CancelEdit () {
-        textViewAlarmModifiying.setVisibility(View.VISIBLE);
-        textViewAlarmModifiying = null;
-        imageViewIncrease.setVisibility(View.INVISIBLE);
-        imageViewDecrease.setVisibility(View.INVISIBLE);
-        imageViewOk.setVisibility(View.INVISIBLE);
+        if (textViewAlarmEdit !=null) {
+            textViewAlarmEdit.setVisibility(View.VISIBLE);
+            textViewAlarmEdit = null;
+            imageViewIncrease.setVisibility(View.INVISIBLE);
+            imageViewDecrease.setVisibility(View.INVISIBLE);
+            imageViewOk.setVisibility(View.INVISIBLE);
+        }
     }
-
 
     //funcion para que parpadee el textview a modificar de las alarmas
     public void ClickModifiyingAlarm (TextView textView) {
         if (padlockClosed == false) { //candado esta abierto,
-            if (textViewAlarmModifiying == null) {
-                textViewAlarmModifiying = textView;
+            if (textViewAlarmEdit == null) {
+                textViewAlarmEdit = textView;
                 imageViewIncrease.setVisibility(View.VISIBLE);
                 imageViewDecrease.setVisibility(View.VISIBLE);
                 imageViewOk.setVisibility(View.VISIBLE);
-            } else if (textViewAlarmModifiying == textView) {
+            } else if (textViewAlarmEdit == textView) {
                 CancelEdit();
             }
         }
-}
-
-
+    }
 
     //funcion para poner dos digitos en la hora, minutos
     public String FormatTwoDigits (int num) {
+        return (num >=0 && num<=9) ? "0" + num : num + "";
 //        if (num >=0 && num<=9){
 //            return "0"+num;
 //        }
 //        return num + "";
+   }
 
-        return (num >=0 && num<=9) ? "0" + num : num + "";
+   //funcion sumar textViews Alarmas
+    public void AlarmIncrease (){
+        if (textViewAlarmEdit != null){
+            int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
+            num = num + 1;
 
+            if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
+                if (formatHour == 24 && num > 23){
+                    num = 0;
+                } else if (formatHour == 12 && num > 12) {
+                    num = 1;
+                }
+            }
+
+            if (textViewAlarmEdit == textViewAlarm1Minutes || textViewAlarmEdit == textViewAlarm2Minutes){
+                if (num > 59){
+                    num = 0;
+                }
+            }
+
+            String resul = FormatTwoDigits(num);
+            textViewAlarmEdit.setText(resul);
+        }
     }
+
+    public void AlarmDecrease (){
+        if (textViewAlarmEdit != null){
+            int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
+
+            //Toast.makeText(this,num+"",Toast.LENGTH_SHORT).show();
+            if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
+                if (formatHour == 24 && num == 0){
+                    num = 24;
+                } else if (formatHour == 12 && num <=1) {
+                        num = 13;
+                }
+            }
+
+            if (textViewAlarmEdit == textViewAlarm1Minutes || textViewAlarmEdit == textViewAlarm2Minutes){
+                if (num == 00){
+                    num = 60;
+                }
+            }
+
+            num = num -1;
+            String resul = FormatTwoDigits(num);
+            textViewAlarmEdit.setText(resul);
+        }
+    }
+
 
 }

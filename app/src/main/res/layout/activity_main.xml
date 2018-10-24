@@ -106,8 +106,8 @@
         android:includeFontPadding="false"
         android:text=":"
         android:textSize="36sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Hour"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Hour" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
+        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes" />
 
     <TextView
         android:id="@+id/textViewAlarm1Hour"
@@ -130,18 +130,18 @@
         app:layout_constraintStart_toEndOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/textViewAlarm2Minutes"
+        android:id="@+id/textViewAlarm2Hour"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:includeFontPadding="false"
         android:text="00"
         android:textSize="36sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Minutes"
         app:layout_constraintEnd_toStartOf="@+id/textView7" />
 
     <TextView
-        android:id="@+id/textViewAlarm2Hour"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewAlarm2Minutes"
+        android:layout_width="44dp"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
@@ -249,7 +249,7 @@
         android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes"
+        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Hour"
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"
         app:layout_constraintTop_toBottomOf="@+id/textViewColon"
         app:srcCompat="@mipmap/ic_decrease_foreground" />

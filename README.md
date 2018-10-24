@@ -8,6 +8,7 @@
 - Alarmas: Implementar que los iconos de la alarma cambien según si están activados o no (campana o campana tachada).
 - Implementar icono enchufado: que parpadee cada medio segundo si el movil esta desenchufado.
 - poner en negrita la fecha.
+- Implementar opción  de bloqueo.
 - Buscar tamaño banner.
 - Buscar iconos para layout (campanas para alarmas, flechas de aumentar y disminuir, brocha o pincel, candado,enchufe).
 - Poner icono en la aplicación.
@@ -29,7 +30,6 @@
     - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
-- Implementar opción  de bloqueo.
 - Poner que la pantalla solo horizontal gire.
 - Hacer layout para Tablet.
 - Poner publicidad.

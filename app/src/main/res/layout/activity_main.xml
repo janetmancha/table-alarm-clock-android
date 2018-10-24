@@ -90,14 +90,14 @@
         app:srcCompat="@mipmap/ic_plug_foreground" />
 
     <TextView
-        android:id="@+id/textViewAlarm1Hour"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text=":"
         android:textSize="36sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-        app:layout_constraintStart_toEndOf="@+id/textView4" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
+        app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Hour" />
 
     <TextView
         android:id="@+id/textView7"
@@ -110,7 +110,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Hour" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textViewAlarm1Hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
@@ -126,8 +126,8 @@
         android:includeFontPadding="false"
         android:text="00"
         android:textSize="36sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-        app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Hour" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
+        app:layout_constraintStart_toEndOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textViewAlarm2Minutes"
@@ -213,6 +213,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="@+id/imageViewAlarm2"
         app:layout_constraintStart_toStartOf="parent"
@@ -229,12 +230,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
         app:layout_constraintEnd_toStartOf="@+id/imageViewOk"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Minutes"
         app:layout_constraintTop_toBottomOf="@+id/textViewColon"
-        app:srcCompat="@mipmap/ic_icon_increase_foreground" />
+        app:srcCompat="@mipmap/ic_increase_foreground" />
 
     <ImageView
         android:id="@+id/imageViewDecrease"
@@ -245,6 +247,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes"
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"

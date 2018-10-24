@@ -1,26 +1,19 @@
 package com.janetmancha.tablealarmclock;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Message;
-import android.support.constraint.ConstraintLayout;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,13 +26,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Elementos UI
-    public TextView textViewHour;
+    private TextView textViewHour;
     private TextView textViewMinutes;
     private TextView textViewColon;
     private TextView textViewDate;
     private TextView textViewAMPM;
+    private TextView textViewAlarm1Hour;
+    private TextView textViewAlarm2Hour;
+    private TextView textViewAlarm1Minutes;
+    private TextView textViewAlarm2Minutes;
+
     private ImageView imageViewPlug;
     private ImageView imageViewPadlock;
+    private ImageView imageViewAlarm1;
+    private ImageView imageViewAlarm2;
+    private ImageView imageViewIncrease;
+    private ImageView imageViewDecrease;
+    private ImageView imageViewOk;
+
+
+
 
 
     Timer timer = new Timer();
@@ -48,9 +54,18 @@ public class MainActivity extends AppCompatActivity {
 
     boolean points = false;
     boolean padlockClosed = true;
-    int formatHour = 24;
-    String am_pm;
+    boolean alarm1Activate = false;
+    boolean alarm2Activate = true;
 
+
+    boolean alarmModifying= false;
+    boolean alarmModifyingFinish = true;
+
+
+    int formatHour = 24;
+    int am_pm;
+
+    TextView textViewAlarmModifiying;
 
 
 
@@ -87,20 +102,15 @@ public class MainActivity extends AppCompatActivity {
                }
             }
 
+
             //int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int dayWeek= calendar.get(calendar.DAY_OF_WEEK);
+            am_pm = calendar.get(Calendar.AM_PM);
 
-            am_pm =  (Calendar.AM_PM == 9) ? "PM" :  "AM"; // si devuelve 9 es PM
-//            if (Calendar.AM_PM == 9) { // si devuelve 9 es PM
-//                am_pm ="PM";
-//            }else {
-//                am_pm = "AM";
-//            }
-//
 
 
 //            if (points == false){
@@ -112,11 +122,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //            final String timeString = timeFormat.format(date);
 
-//            textViewHour =(TextView) findViewById(R.id.textViewHour);
-//            textViewMinutes = (TextView) findViewById(R.id.textViewMinutes);
-//            textViewColon = (TextView) findViewById(R.id.textViewColon);
-//            textViewDate = (TextView) findViewById(R.id.textViewDate);
-//            imageViewPlug = (ImageView) findViewById(R.id.imageViewPlug);
 
 //            textViewHour.setText(date.getHours()+ "");
 //            textViewMinutes.setText(date.getMinutes()+ "");
@@ -125,7 +130,12 @@ public class MainActivity extends AppCompatActivity {
             textViewHour.setText(FormatTwoDigits(hours));
             textViewMinutes.setText(FormatTwoDigits(minutes));
             textViewDate.setText(timeFormat.format(calendar.getTime()));
-            textViewAMPM.setText(am_pm);
+            if (am_pm == Calendar.AM) {
+                textViewAMPM.setText("AM");
+            }
+            else{
+                textViewAMPM.setText("PM");
+            }
 
             if (points == false){
                 textViewColon.setVisibility(TextView.VISIBLE);
@@ -162,6 +172,17 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 imageViewPlug.setVisibility(View.VISIBLE);
+            }
+
+
+            if (alarmModifying == true && padlockClosed == false ){
+                if (textViewAlarmModifiying.getVisibility() == View.VISIBLE){
+                    textViewAlarmModifiying.setVisibility(View.INVISIBLE);
+                } else {
+                    textViewAlarmModifiying.setVisibility(View.VISIBLE);
+                }
+            } else {
+                textViewAlarmModifiying.setVisibility(View.VISIBLE);
             }
         }};
 
@@ -209,6 +230,18 @@ public class MainActivity extends AppCompatActivity {
         imageViewPlug = (ImageView) findViewById(R.id.imageViewPlug);
         imageViewPadlock = (ImageView) findViewById(R.id.imageViewPadlock);
         textViewAMPM = (TextView) findViewById(R.id.textViewAMPM);
+        imageViewAlarm1 = (ImageView) findViewById(R.id.imageViewAlarm1);
+        imageViewAlarm2 = (ImageView) findViewById(R.id.imageViewAlarm2);
+        textViewAlarm1Hour = (TextView)findViewById(R.id.textViewAlarm1Hour);
+        textViewAlarm1Minutes = (TextView) findViewById(R.id.textViewAlarm1Minutes);
+        textViewAlarm2Hour = (TextView) findViewById(R.id.textViewAlarm2Hour);
+        textViewAlarm2Minutes = (TextView) findViewById(R.id.textViewAlarm2Minutes);
+        imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
+        imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
+        imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
+
+
+        textViewAlarmModifiying = textViewAlarm1Hour;
 
 
         textViewHour.setOnClickListener(new View.OnClickListener() {
@@ -232,23 +265,108 @@ public class MainActivity extends AppCompatActivity {
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 if (padlockClosed == true) { //candato cerrado
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_open_foreground);
                     padlockClosed = false;
 
-                    textViewHour.setClickable(true);
+                    //textViewHour.setClickable(true);
 
                 } else { //candado abierto
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_block_foreground);
                     padlockClosed = true;
+                    //alarmModifying = false;
 
-                    textViewHour.setClickable(false);
+                    //textViewHour.setClickable(false);
                 }
+
+            }
+        });
+
+        imageViewAlarm1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (padlockClosed == false) { //candado esta abierto
+                    if (alarm1Activate == true) {
+                        imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
+                        alarm1Activate = false;
+                    } else {
+                        imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
+                        alarm1Activate = true;
+                    }
+                }
+            }
+        });
+
+        imageViewAlarm2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (padlockClosed == false) { //candado esta abierto
+                    if (alarm2Activate == true) {
+                        imageViewAlarm2.setImageResource(R.mipmap.ic_bell_off_foreground);
+                        alarm2Activate = false;
+                    } else {
+                        imageViewAlarm2.setImageResource(R.mipmap.ic_bell_on_foreground);
+                        alarm2Activate = true;
+                    }
+                }
+            }
+        });
+
+        textViewAlarm1Hour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClickModifiyingAlarm(textViewAlarm1Hour);
+            }
+        });
+
+        textViewAlarm1Minutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClickModifiyingAlarm(textViewAlarm1Minutes);
+            }
+        });
+
+        textViewAlarm2Hour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClickModifiyingAlarm(textViewAlarm2Hour);
+            }
+        });
+
+        textViewAlarm2Minutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClickModifiyingAlarm(textViewAlarm2Minutes);
             }
         });
 
 
     }
+
+    //funcion para que parpadee el textview a modificar de las alarmas
+    public void ClickModifiyingAlarm (TextView textViewMofifyingAlarm) {
+
+        if (alarmModifyingFinish == false) {
+            alarmModifyingFinish = true;
+            alarmModifying = false;
+        }else {
+            alarmModifyingFinish= false;
+            alarmModifying = true;
+        }
+
+        if (padlockClosed == false && alarmModifyingFinish == false) { //candado esta abierto, alarma a la espera de modificacion
+            textViewAlarmModifiying = textViewMofifyingAlarm;
+
+            imageViewIncrease.setVisibility(View.VISIBLE);
+            imageViewDecrease.setVisibility(View.VISIBLE);
+            imageViewOk.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 
 
     //funcion para poner dos digitos en la hora, minutos

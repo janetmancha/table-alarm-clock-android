@@ -450,15 +450,19 @@ public class MainActivity extends AppCompatActivity {
                 if (formatHour == 24 && num < 0){
                     num = 23;
                 } else if (formatHour == 12) {
-                    if (num ==0){
+                    if (num ==0) {
                         num = 12;
-                        if (textViewAlarmFormatEdit.getText().toString() == "PM"){
+                    }
+                    if (num ==11) {
+                        if (textViewAlarmFormatEdit.getText().toString() == "PM" && num == 11){
                             textViewAlarmFormatEdit.setText("AM");
                         }
                         else {
                             textViewAlarmFormatEdit.setText("PM");
                         }
+
                     }
+
                 }
             }
 

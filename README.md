@@ -2,6 +2,7 @@
 
 ## CHANGE LOG
 
+- Alarmas: - Implementar el aumento y disminucion de horas y minutos de las alarmas.
 - Alarmas: Los minutos y las horas parpadean cuando se pinche en ellos para indicar que están a la espera de ser modificados, en ese momento apareceran
   los botones de aumentar, disminuir y check, si no estan en modo modificar los iconos de disminuir, aumentar y check desapareceran.
 - Al tocar la hora cambie a formato 24 o 12 horas, incluido el cambio en las alarmas.
@@ -25,7 +26,6 @@
 - Hacer Layout completo.
 - Hacer Layout solo hora.
 - 2 Alarmas:
-    - Implementar el aumento y disminucion de horas y minutos de las alarmas.
     - Poner la alarma con melodía y que suene a la hora elegida si esta activada.
     - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.

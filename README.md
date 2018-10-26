@@ -4,7 +4,7 @@
 
 - Alarmas: Los minutos y las horas parpadean cuando se pinche en ellos para indicar que están a la espera de ser modificados, en ese momento apareceran
   los botones de aumentar, disminuir y check, si no estan en modo modificar los iconos de disminuir, aumentar y check desapareceran.
-- Al tocar la hora cambie a formato 24 o 12 horas.
+- Al tocar la hora cambie a formato 24 o 12 horas, incluido el cambio en las alarmas.
 - Alarmas: Implementar que los iconos de la alarma cambien según si están activados o no (campana o campana tachada).
 - Implementar icono enchufado: que parpadee cada medio segundo si el movil esta desenchufado.
 - poner en negrita la fecha.

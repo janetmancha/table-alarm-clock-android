@@ -14,6 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewAlarm2Hour;
     private TextView textViewAlarm1Minutes;
     private TextView textViewAlarm2Minutes;
+    private TextView textViewAlarm1Format;
+    private TextView textViewAlarm2Format;
 
     private ImageView imageViewPlug;
     private ImageView imageViewPadlock;
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     int formatHour = 24;
     int am_pm;
+    String hourChange;
 
     TextView textViewAlarmEdit;
 
@@ -84,20 +91,22 @@ public class MainActivity extends AppCompatActivity {
             //final String timeString = timeFormat.format(date);
 
             Calendar calendar = Calendar.getInstance();
-            int hours;
-            if (formatHour == 24) {
-               hours= calendar.get(Calendar.HOUR_OF_DAY);
+            //int hours;
+//            hours= calendar.get(Calendar.HOUR_OF_DAY);
 
-            } else {
-                //calendar.set(Calendar.AM_PM, Calendar.PM);
-               hours = calendar.get(Calendar.HOUR);
-               if (hours == 00) {
-                   hours = 12;
-               }
-            }
+//            if (formatHour == 24) {
+//               hours= calendar.get(Calendar.HOUR_OF_DAY);
+//
+//            } else {
+//                //calendar.set(Calendar.AM_PM, Calendar.PM);
+//                hours = calendar.get(Calendar.HOUR);
+//               if (hours == 00) {
+//                   hours = 12;
+//               }
+//            }
 
 
-            //int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
+            int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -121,7 +130,11 @@ public class MainActivity extends AppCompatActivity {
 //            textViewMinutes.setText(date.getMinutes()+ "");
 //            textViewSeconds.setText(date.getSeconds()+ "");
 
-            textViewHour.setText(FormatTwoDigits(hours));
+
+            if (formatHour == 24){
+                textViewHour.setText(FormatTwoDigits(hours));
+            }
+
             textViewMinutes.setText(FormatTwoDigits(minutes));
             textViewDate.setText(timeFormat.format(calendar.getTime()));
             if (am_pm == Calendar.AM) {
@@ -141,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
             //textViewTime = (TextView) findViewById(R.id.textViewTime);
             //textViewTime.setText(timeString);
             //textViewTime.setText(date.getSeconds() + "");
+
+
+            //textViewAlarm1Hour.setText(stringAlarm1);
 
         }
     };
@@ -228,6 +244,13 @@ public class MainActivity extends AppCompatActivity {
         imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
+        textViewAlarm1Format = (TextView) findViewById(R.id.textViewAlarm1Format);
+        textViewAlarm2Format = (TextView) findViewById(R.id.textViewAlarm2Format);
+
+
+
+        //
+        // hourChange = textViewHour.getText().toString();
 
         textViewHour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,11 +259,14 @@ public class MainActivity extends AppCompatActivity {
                 if (padlockClosed == false) { //candado esta abierto
                     if (formatHour == 12) {
                         formatHour = 24;
-                        textViewAMPM.setVisibility(View.INVISIBLE);
+                        //textViewAMPM.setVisibility(View.INVISIBLE);
                     } else { //candado cerrado
                         formatHour = 12;
-                        textViewAMPM.setVisibility(View.VISIBLE);
+                        //textViewAMPM.setVisibility(View.VISIBLE);
                     }
+                    ChangeFormatHours (textViewHour,textViewAMPM);
+                    ChangeFormatHours (textViewAlarm1Hour,textViewAlarm1Format);
+                    ChangeFormatHours (textViewAlarm2Hour,textViewAlarm2Format);
                 }
                 timeHandler.obtainMessage(1).sendToTarget();
             }
@@ -401,11 +427,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //funcion restar textViews Alarmas
     public void AlarmDecrease (){
         if (textViewAlarmEdit != null){
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
 
-            //Toast.makeText(this,num+"",Toast.LENGTH_SHORT).show();
             if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
                 if (formatHour == 24 && num == 0){
                     num = 24;
@@ -424,6 +451,69 @@ public class MainActivity extends AppCompatActivity {
             String resul = FormatTwoDigits(num);
             textViewAlarmEdit.setText(resul);
         }
+    }
+
+    //funcion cambiar formato 24 horas o 12 horas
+    public void ChangeFormatHours (TextView textViewHour, TextView textViewFormat){
+
+        int hour=0;
+        String hourFinal = textViewHour.getText().toString();
+
+        try {
+            hour = Integer.parseInt(textViewHour.getText().toString());
+        } catch(NumberFormatException nfe) {
+
+        }
+
+        if (formatHour == 24){
+            textViewFormat.setVisibility(View.INVISIBLE);
+
+            if (textViewFormat.getText().toString() == "PM") {
+                if (hour == 1){ hourFinal = "13";}
+                if (hour == 2){ hourFinal = "14";}
+                if (hour == 3){ hourFinal = "15";}
+                if (hour == 4){ hourFinal = "16";}
+                if (hour == 5){ hourFinal = "17";}
+                if (hour == 6){ hourFinal = "18";}
+                if (hour == 7){ hourFinal = "19";}
+                if (hour == 8){ hourFinal = "20";}
+                if (hour == 9){ hourFinal = "21";}
+                if (hour == 10){ hourFinal = "22";}
+                if (hour == 11){ hourFinal = "23";}
+                if (hour == 12){ hourFinal = "00";}
+            }
+
+
+        } else { // formato 12 horas
+            textViewFormat.setVisibility(View.VISIBLE);
+
+            if (hour >= 0 && hour <12) {
+                textViewFormat.setText("AM");
+            }else {
+                textViewFormat.setText("PM");
+            }
+
+            if (hour == 0){ hourFinal = "12";}
+            if (hour == 13){ hourFinal = "01";}
+            if (hour == 14){ hourFinal = "02";}
+            if (hour == 15){ hourFinal = "03";}
+            if (hour == 16){ hourFinal = "04";}
+            if (hour == 17){ hourFinal = "05";}
+            if (hour == 18){ hourFinal = "06";}
+            if (hour == 19){ hourFinal = "07";}
+            if (hour == 20){ hourFinal = "08";}
+            if (hour == 21){ hourFinal = "09";}
+            if (hour == 22){ hourFinal = "10";}
+            if (hour == 23){ hourFinal = "11";}
+
+
+
+        }
+        textViewHour.setText(hourFinal);
+
+
+
+
     }
 
 

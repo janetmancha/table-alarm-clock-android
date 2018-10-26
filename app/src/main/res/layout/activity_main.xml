@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
-        android:text="13"
+        android:text="00"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1" />
@@ -134,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="43dp"
         android:includeFontPadding="false"
-        android:text="08"
+        android:text="00"
         android:textSize="36sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Minutes"
         app:layout_constraintEnd_toStartOf="@+id/textView7" />

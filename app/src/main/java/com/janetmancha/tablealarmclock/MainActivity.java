@@ -1,7 +1,9 @@
 package com.janetmancha.tablealarmclock;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.BatteryManager;
 import android.os.Handler;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewAlarmEdit;
     TextView textViewAlarmFormatEdit;
 
+
+    private SharedPreferences prefs;
 
 
 //    public Handler timeHandler = new Handler() {
@@ -157,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             //textViewTime.setText(date.getSeconds() + "");
 
 
-            //textViewAlarm1Hour.setText(stringAlarm1);
+
 
         }
     };
@@ -241,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm1Hour = (TextView)findViewById(R.id.textViewAlarm1Hour);
         textViewAlarm1Minutes = (TextView) findViewById(R.id.textViewAlarm1Minutes);
         textViewAlarm2Hour = (TextView) findViewById(R.id.textViewAlarm2Hour);
-        textViewAlarm2Minutes = (TextView) findViewById(R.id.textViewAlarm2Hour);
+        textViewAlarm2Minutes = (TextView) findViewById(R.id.textViewAlarm2Minutes);
         imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
@@ -249,8 +253,21 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm2Format = (TextView) findViewById(R.id.textViewAlarm2Format);
 
 
+        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();
 
-        //
+        textViewAlarm1Hour.setText(prefs.getString("hourAlarm1","00"));
+        textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
+        textViewAlarm1Minutes.setText(prefs.getString("minutesAlarm1","00"));
+        textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
+
+        alarm1Activate = prefs.getBoolean("alarm1Activate",false);
+        if (alarm1Activate == true) {
+            imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
+        } else {
+            imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
+        }
+
         // hourChange = textViewHour.getText().toString();
 
         textViewHour.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFormatHours (textViewAlarm2Hour,textViewAlarm2Format);
                 }
                 timeHandler.obtainMessage(1).sendToTarget();
+
             }
         });
 
@@ -295,11 +313,16 @@ public class MainActivity extends AppCompatActivity {
                     if (alarm1Activate == true) {
                         imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
                         alarm1Activate = false;
+                        editor.putBoolean("alarm1Activate",false);
+                        editor.commit();
                     } else {
                         imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
                         alarm1Activate = true;
+                        editor.putBoolean("alarm1Activate",true);
+                        editor.commit();
                     }
                 }
+
             }
         });
 
@@ -349,6 +372,15 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
+                editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
+                editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
+                editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
+                editor.commit();
+                //editor.apply();
+
+
                 CancelEdit();
             }
         });

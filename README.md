@@ -2,6 +2,7 @@
 
 ## CHANGE LOG
 
+- Alarma; - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Alarmas: - Implementar el aumento y disminucion de horas y minutos de las alarmas.
 - Alarmas: Los minutos y las horas parpadean cuando se pinche en ellos para indicar que están a la espera de ser modificados, en ese momento apareceran
   los botones de aumentar, disminuir y check, si no estan en modo modificar los iconos de disminuir, aumentar y check desapareceran.
@@ -27,7 +28,6 @@
 - Hacer Layout solo hora.
 - 2 Alarmas:
     - Poner la alarma con melodía y que suene a la hora elegida si esta activada.
-    - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
 - Poner que la pantalla solo horizontal gire.

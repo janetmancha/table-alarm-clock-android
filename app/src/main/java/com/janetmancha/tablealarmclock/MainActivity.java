@@ -52,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewOk;
 
 
-
-
-
     Timer timer = new Timer();
     Timer timerIcon = new Timer();
     SimpleDateFormat timeFormat;
@@ -66,11 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
     int formatHour = 24;
     int am_pm;
-    String hourChange;
 
     TextView textViewAlarmEdit;
     TextView textViewAlarmFormatEdit;
-
 
     private SharedPreferences prefs;
 
@@ -268,7 +263,14 @@ public class MainActivity extends AppCompatActivity {
             imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
         }
 
-        // hourChange = textViewHour.getText().toString();
+        alarm2Activate = prefs.getBoolean("alarm2Activate",false);
+        if (alarm2Activate == true) {
+            imageViewAlarm2.setImageResource(R.mipmap.ic_bell_on_foreground);
+        } else {
+            imageViewAlarm2.setImageResource(R.mipmap.ic_bell_off_foreground);
+        }
+
+
 
         textViewHour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                     if (formatHour == 12) {
                         formatHour = 24;
                         //textViewAMPM.setVisibility(View.INVISIBLE);
-                    } else { //candado cerrado
+                    } else {
                         formatHour = 12;
                         //textViewAMPM.setVisibility(View.VISIBLE);
                     }
@@ -313,14 +315,12 @@ public class MainActivity extends AppCompatActivity {
                     if (alarm1Activate == true) {
                         imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
                         alarm1Activate = false;
-                        editor.putBoolean("alarm1Activate",false);
-                        editor.commit();
                     } else {
                         imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
                         alarm1Activate = true;
-                        editor.putBoolean("alarm1Activate",true);
-                        editor.commit();
                     }
+                    editor.putBoolean("alarm1Activate",alarm1Activate);
+                    editor.commit();
                 }
 
             }
@@ -337,6 +337,8 @@ public class MainActivity extends AppCompatActivity {
                         imageViewAlarm2.setImageResource(R.mipmap.ic_bell_on_foreground);
                         alarm2Activate = true;
                     }
+                    editor.putBoolean("alarm2Activate",alarm2Activate);
+                    editor.commit();
                 }
             }
         });
@@ -372,15 +374,12 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
                 editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
                 editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
                 editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
                 editor.commit();
                 //editor.apply();
-
-
                 CancelEdit();
             }
         });
@@ -523,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (formatHour == 24){
-            textViewFormat.setVisibility(View.INVISIBLE);
+
 
             if (textViewFormat.getText().toString() == "PM") {
                 if (hour == 1){ hourFinal = "13";}
@@ -539,15 +538,18 @@ public class MainActivity extends AppCompatActivity {
                 if (hour == 11){ hourFinal = "23";}
                 if (hour == 12){ hourFinal = "00";}
             }
-        } else { // formato 12 horas
-            textViewFormat.setVisibility(View.VISIBLE);
 
-            if (hour >= 0 && hour <12) {
-                textViewFormat.setText("AM");
-            }else {
-                textViewFormat.setText("PM");
-            }
-            if (hour == 0){ hourFinal = "12";}
+            textViewFormat.setVisibility(View.INVISIBLE);
+
+        } else { // formato 12 horas
+
+
+//            if (hour >= 0 && hour <=12) {
+//                textViewFormat.setText("AM");
+//            }else {
+//                textViewFormat.setText("PM");
+//            }
+            if (hour == 0){ hourFinal = "12";textViewFormat.setText("AM");}
             if (hour == 13){ hourFinal = "01";}
             if (hour == 14){ hourFinal = "02";}
             if (hour == 15){ hourFinal = "03";}
@@ -559,7 +561,10 @@ public class MainActivity extends AppCompatActivity {
             if (hour == 21){ hourFinal = "09";}
             if (hour == 22){ hourFinal = "10";}
             if (hour == 23){ hourFinal = "11";}
+
+            textViewFormat.setVisibility(View.VISIBLE);
         }
         textViewHour.setText(hourFinal);
+
     }
 }

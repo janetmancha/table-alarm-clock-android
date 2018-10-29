@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -155,9 +156,7 @@ public class MainActivity extends AppCompatActivity {
             //textViewTime.setText(timeString);
             //textViewTime.setText(date.getSeconds() + "");
 
-
-
-
+            Alarm();
         }
     };
 
@@ -255,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
         textViewAlarm1Minutes.setText(prefs.getString("minutesAlarm1","00"));
         textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
+        textViewAlarm1Format.setText(prefs.getString("formatAlarm1",textViewAlarm1Format.getText().toString()));
+        textViewAlarm2Format.setText(prefs.getString("formatAlarm2",textViewAlarm2Format.getText().toString()));
 
         alarm1Activate = prefs.getBoolean("alarm1Activate",false);
         if (alarm1Activate == true) {
@@ -374,10 +375,13 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
                 editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
                 editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
                 editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
+                editor.putString("formatAlarm1",textViewAlarm1Format.getText().toString());
+                editor.putString("formatAlarm2",textViewAlarm2Format.getText().toString());
                 editor.commit();
                 //editor.apply();
                 CancelEdit();
@@ -538,33 +542,44 @@ public class MainActivity extends AppCompatActivity {
                 if (hour == 11){ hourFinal = "23";}
                 if (hour == 12){ hourFinal = "00";}
             }
+            if (hour == 12 && textViewFormat.getText().toString() == "AM") {hourFinal = "00"; }
 
             textViewFormat.setVisibility(View.INVISIBLE);
 
         } else { // formato 12 horas
 
-
-//            if (hour >= 0 && hour <=12) {
-//                textViewFormat.setText("AM");
-//            }else {
-//                textViewFormat.setText("PM");
-//            }
             if (hour == 0){ hourFinal = "12";textViewFormat.setText("AM");}
-            if (hour == 13){ hourFinal = "01";}
-            if (hour == 14){ hourFinal = "02";}
-            if (hour == 15){ hourFinal = "03";}
-            if (hour == 16){ hourFinal = "04";}
-            if (hour == 17){ hourFinal = "05";}
-            if (hour == 18){ hourFinal = "06";}
-            if (hour == 19){ hourFinal = "07";}
-            if (hour == 20){ hourFinal = "08";}
-            if (hour == 21){ hourFinal = "09";}
-            if (hour == 22){ hourFinal = "10";}
-            if (hour == 23){ hourFinal = "11";}
+            if (hour == 13){ hourFinal = "01";textViewFormat.setText("PM");}
+            if (hour == 14){ hourFinal = "02";textViewFormat.setText("PM");}
+            if (hour == 15){ hourFinal = "03";textViewFormat.setText("PM");}
+            if (hour == 16){ hourFinal = "04";textViewFormat.setText("PM");}
+            if (hour == 17){ hourFinal = "05";textViewFormat.setText("PM");}
+            if (hour == 18){ hourFinal = "06";textViewFormat.setText("PM");}
+            if (hour == 19){ hourFinal = "07";textViewFormat.setText("PM");}
+            if (hour == 20){ hourFinal = "08";textViewFormat.setText("PM");}
+            if (hour == 21){ hourFinal = "09";textViewFormat.setText("PM");}
+            if (hour == 22){ hourFinal = "10";textViewFormat.setText("PM");}
+            if (hour == 23){ hourFinal = "11";textViewFormat.setText("PM");}
 
             textViewFormat.setVisibility(View.VISIBLE);
         }
         textViewHour.setText(hourFinal);
+
+    }
+
+    public void Alarm () {
+
+        if (textViewAlarm1Hour.getText().toString().equals(textViewHour.getText().toString())
+                && textViewAlarm1Minutes.getText().toString().equals(textViewMinutes.getText().toString())
+                && alarm1Activate == true) {
+            Toast.makeText(getBaseContext(),"Sonando alarma 1", Toast.LENGTH_SHORT).show();
+        }
+
+        if (textViewAlarm2Hour.getText().toString().equals(textViewHour.getText().toString())
+                && textViewAlarm2Minutes.getText().toString().equals(textViewMinutes.getText().toString())
+                && alarm2Activate == true) {
+            Toast.makeText(getBaseContext(),"Sonando alarma 2", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

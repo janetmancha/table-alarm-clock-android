@@ -147,7 +147,7 @@
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Format" />
+        app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2" />
 
     <ImageView
         android:id="@+id/imageViewPadlock"
@@ -253,38 +253,6 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"
         app:layout_constraintTop_toBottomOf="@+id/textViewColon"
         app:srcCompat="@mipmap/ic_decrease_foreground" />
-
-    <TextView
-        android:id="@+id/textViewAMPM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="25sp"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewMinutes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewMinutes" />
-
-    <TextView
-        android:id="@+id/textViewAlarm1Format"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PM"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Minutes"
-        app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Minutes" />
-
-    <TextView
-        android:id="@+id/textViewAlarm2Format"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PM"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Minutes"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2" />
 
 
 </android.support.constraint.ConstraintLayout>

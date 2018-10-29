@@ -31,7 +31,6 @@
     - Poner la alarma con melodía y que suene a la hora elegida si esta activada.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
-
 - Hacer layout para Tablet.
 - Poner publicidad.
 - Hacer capturas de pantalla de la aplicación.

@@ -8,9 +8,12 @@ import android.content.pm.ActivityInfo;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Elementos UI
+    private ConstraintLayout constraintLayout;
     private TextView textViewHour;
     private TextView textViewMinutes;
     private TextView textViewColon;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewOk;
 
 
+
     Timer timer = new Timer();
     Timer timerIcon = new Timer();
     SimpleDateFormat timeFormat;
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     int formatHour = 24;
     int am_pm;
+
 
     TextView textViewAlarmEdit;
     TextView textViewAlarmFormatEdit;
@@ -156,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
             //textViewTime.setText(timeString);
             //textViewTime.setText(date.getSeconds() + "");
 
+
             Alarm();
+
         }
     };
 
@@ -223,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // orientacion horizontal
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE); // la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -245,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
         textViewAlarm1Format = (TextView) findViewById(R.id.textViewAlarm1Format);
         textViewAlarm2Format = (TextView) findViewById(R.id.textViewAlarm2Format);
+        constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
 
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
@@ -401,6 +410,13 @@ public class MainActivity extends AppCompatActivity {
                 AlarmDecrease();
             }
         });
+
+//        constraintLayout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//            }
+//        });
 
     }
 

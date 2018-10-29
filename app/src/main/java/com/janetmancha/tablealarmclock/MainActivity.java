@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
             Alarm();
 
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //mantener la pantalla siempre encendida
+
         }
     };
 
@@ -178,13 +180,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE); // la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
         super.onCreate(savedInstanceState);
-
         //ocultar barra de notificaciones versiones 4.1 y superiores para inferiores cambiado style en manifest
-        if (Build.VERSION.SDK_INT > 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
+        if (Build.VERSION.SDK_INT > 16) { getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); }
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -227,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             imageViewAlarm2.setImageResource(R.mipmap.ic_bell_off_foreground);
         }
-
 
 
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {

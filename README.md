@@ -2,6 +2,8 @@
 
 ## CHANGE LOG
 
+- pantalla siempre encedida aunque dispositivo no esté enchufado.
+- Eliminar barra de notificaciones
 - la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
 - Alarma; - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Alarmas: - Implementar el aumento y disminucion de horas y minutos de las alarmas.
@@ -24,6 +26,7 @@
 
 
 ## ROADMAP
+
 
 - Hacer Layout completo.
 - Hacer Layout solo hora.

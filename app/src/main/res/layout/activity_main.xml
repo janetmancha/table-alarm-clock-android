@@ -13,23 +13,25 @@
 
     <TextView
         android:id="@+id/textViewHour"
-        android:layout_width="wrap_content"
-        android:layout_height="220sp"
+        android:layout_width="0dp"
+        android:layout_height="225sp"
         android:clickable="false"
-        android:fontFamily="sans-serif"
+        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="21"
+        android:textAlignment="textEnd"
         android:textColor="@color/white"
         android:textSize="220sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm1Minutes"
         app:layout_constraintEnd_toStartOf="@+id/textViewColon"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewColon"
         android:layout_width="wrap_content"
         android:layout_height="220dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
@@ -39,18 +41,21 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/textViewMinutes"
-        android:layout_width="wrap_content"
-        android:layout_height="220sp"
-        android:fontFamily="sans-serif"
+        android:layout_width="0dp"
+        android:layout_height="225sp"
+        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="35"
+        android:textAlignment="gravity"
         android:textColor="@color/white"
         android:textSize="220sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewColon"
         app:layout_constraintTop_toTopOf="parent" />
 

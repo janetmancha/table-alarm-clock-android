@@ -214,7 +214,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewbanner"
         app:layout_constraintTop_toBottomOf="@+id/imageViewOk"
-        app:srcCompat="@mipmap/ic_clock_foreground" />
+        app:srcCompat="@mipmap/ic_music_foreground" />
 
     <ImageView
         android:id="@+id/imageViewOk"

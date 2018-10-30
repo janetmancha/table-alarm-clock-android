@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
@@ -68,11 +70,18 @@ public class MainActivity extends AppCompatActivity {
     boolean alarm1Activate;
     boolean alarm2Activate;
 
-    Boolean alarm=true;
+    Boolean alarm = false;
 
     TextView textViewAlarmEdit;
 
+    MediaPlayer player;
+
+    String snoozeAlarmHour;
+    String snoozeAlarmMinutes;
+
     private SharedPreferences prefs;
+
+
 
 
 //    public Handler timeHandler = new Handler() {
@@ -92,8 +101,10 @@ public class MainActivity extends AppCompatActivity {
             timeFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
             Calendar calendar = Calendar.getInstance();
 
+
             int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
+            int second = calendar.get(Calendar.SECOND);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -113,24 +124,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-//            Alarm();
-//            if (alarm == true) {
-//                    alarm = false;
-//                    showAlertDialog();
-//            }
-
-            if (textViewAlarm1Hour.getText().toString().equals(textViewHour.getText().toString())
-                    && textViewAlarm1Minutes.getText().toString().equals(textViewMinutes.getText().toString())
-                    && alarm1Activate == true) {
-                if (alarm == true) {
-                    alarm = false;
-                    showAlertDialog();
-                }
-
+            if (second == 0 && (
+                IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(),alarm1Activate) ||
+                IsAlarmNow(textViewAlarm2Hour.getText().toString(),textViewAlarm2Minutes.getText().toString(),alarm2Activate) ||
+                IsAlarmNow(snoozeAlarmHour,snoozeAlarmMinutes,true)
+                )) {
+                showAlertDialog();
             }
-
-
-
 
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //mantener la pantalla siempre encendida
 
@@ -436,25 +436,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public void Alarm () {
-
-        if (textViewAlarm1Hour.getText().toString().equals(textViewHour.getText().toString())
-                && textViewAlarm1Minutes.getText().toString().equals(textViewMinutes.getText().toString())
-                && alarm1Activate == true) {
-                    alarm = true;
-
-                    //Toast.makeText(getBaseContext(),"Sonando alarma 1", Toast.LENGTH_SHORT).show();
-        }
-
-        if (textViewAlarm2Hour.getText().toString().equals(textViewHour.getText().toString())
-                && textViewAlarm2Minutes.getText().toString().equals(textViewMinutes.getText().toString())
-                && alarm2Activate == true) {
-                alarm = true;
-                //Toast.makeText(getBaseContext(),"Sonando alarma 2", Toast.LENGTH_SHORT).show();
-            }
-        }
-
     public void showAlertDialog () {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -467,12 +448,16 @@ public class MainActivity extends AppCompatActivity {
 
         final AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
+        player.start();
 
         wake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dialog.dismiss();
-                Toast.makeText(getBaseContext(),"despierto" + alarm, Toast.LENGTH_SHORT).show();
+                player.stop();
                 dialog.cancel();
             }
         });
@@ -480,10 +465,27 @@ public class MainActivity extends AppCompatActivity {
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dialog.dismiss();
-                Toast.makeText(getBaseContext(),"dormido" + alarm, Toast.LENGTH_SHORT).show();
+
+                Date date = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date); //tuFechaBase es un Date;
+                calendar.add(Calendar.MINUTE, 2); //minutosASumar es int.
+                Date fechaSalida = calendar.getTime();
+
+                textViewAlarm1Hour.setText(FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
+                textViewAlarm1Minutes.setText(FormatTwoDigits(calendar.get(Calendar.MINUTE)));
+
+                player.stop();
+                dialog.cancel();
+
             }
         });
 
+    }
+
+    public Boolean IsAlarmNow (String hour, String minutes, boolean alarmActivate){
+        return textViewHour.getText().equals(hour) &&
+               textViewMinutes.getText().equals(minutes) &&
+               alarmActivate;
     }
 }

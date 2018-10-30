@@ -1,6 +1,7 @@
 package com.janetmancha.tablealarmclock;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -14,9 +15,11 @@ import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     boolean alarm1Activate;
     boolean alarm2Activate;
 
+    Boolean alarm=true;
 
     TextView textViewAlarmEdit;
 
@@ -108,7 +112,25 @@ public class MainActivity extends AppCompatActivity {
                 points = false;
             }
 
-            Alarm();
+
+//            Alarm();
+//            if (alarm == true) {
+//                    alarm = false;
+//                    showAlertDialog();
+//            }
+
+            if (textViewAlarm1Hour.getText().toString().equals(textViewHour.getText().toString())
+                    && textViewAlarm1Minutes.getText().toString().equals(textViewMinutes.getText().toString())
+                    && alarm1Activate == true) {
+                if (alarm == true) {
+                    alarm = false;
+                    showAlertDialog();
+                }
+
+            }
+
+
+
 
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //mantener la pantalla siempre encendida
 
@@ -420,14 +442,48 @@ public class MainActivity extends AppCompatActivity {
         if (textViewAlarm1Hour.getText().toString().equals(textViewHour.getText().toString())
                 && textViewAlarm1Minutes.getText().toString().equals(textViewMinutes.getText().toString())
                 && alarm1Activate == true) {
-            Toast.makeText(getBaseContext(),"Sonando alarma 1", Toast.LENGTH_SHORT).show();
+                    alarm = true;
+
+                    //Toast.makeText(getBaseContext(),"Sonando alarma 1", Toast.LENGTH_SHORT).show();
         }
 
         if (textViewAlarm2Hour.getText().toString().equals(textViewHour.getText().toString())
                 && textViewAlarm2Minutes.getText().toString().equals(textViewMinutes.getText().toString())
                 && alarm2Activate == true) {
-            Toast.makeText(getBaseContext(),"Sonando alarma 2", Toast.LENGTH_SHORT).show();
+                alarm = true;
+                //Toast.makeText(getBaseContext(),"Sonando alarma 2", Toast.LENGTH_SHORT).show();
+            }
         }
+
+    public void showAlertDialog () {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_alarm, null);
+        builder.setView(viewInflated);
+
+        ImageView sleep = (ImageView) viewInflated.findViewById(R.id.imageViewSleep);
+        ImageView wake = (ImageView) viewInflated.findViewById(R.id.imageViewWake);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        wake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialog.dismiss();
+                Toast.makeText(getBaseContext(),"despierto" + alarm, Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+
+        sleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialog.dismiss();
+                Toast.makeText(getBaseContext(),"dormido" + alarm, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

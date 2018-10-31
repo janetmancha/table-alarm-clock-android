@@ -202,7 +202,7 @@
         app:srcCompat="@mipmap/ic_palette_colors_foreground" />
 
     <ImageView
-        android:id="@+id/imageViewClock"
+        android:id="@+id/imageViewSound"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
@@ -220,6 +220,7 @@
         android:id="@+id/imageViewOk"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -228,22 +229,22 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="@+id/imageViewAlarm2"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/ic_check_foreground" />
+        app:srcCompat="@mipmap/ic_confirm_foreground" />
 
     <ImageView
         android:id="@+id/imageViewIncrease"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
+        app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toStartOf="@+id/imageViewOk"
-        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Minutes"
-        app:srcCompat="@mipmap/ic_increase_foreground" />
+        app:srcCompat="@mipmap/ic_sum_foreground" />
 
     <ImageView
         android:id="@+id/imageViewDecrease"
@@ -257,7 +258,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOk"
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Hour"
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"
-        app:srcCompat="@mipmap/ic_decrease_foreground" />
+        app:srcCompat="@mipmap/ic_resta_foreground" />
 
     <ImageView
         android:id="@+id/imageViewSnooze"

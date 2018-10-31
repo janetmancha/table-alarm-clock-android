@@ -2,6 +2,7 @@
 
 ## CHANGE LOG
 
+- Alarmas: - Implementar boton snooze.
 - Alarmas: Poner la alarma con melodía y que suene a la hora elegida si esta activada, modo normal y modo snooze.
 - pantalla siempre encedida aunque dispositivo no esté enchufado.
 - Eliminar barra de notificaciones.
@@ -28,11 +29,8 @@
 
 ## ROADMAP
 
-
 - Hacer Layout completo.
-- Hacer Layout solo hora.
-- Implementar opcion de cambiar sonido de alarma.
-- Implementar boton snooze.
+- Implementar opcion de cambiar sonido de alarma y guardalos en preferencias.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
 - Hacer layout para Tablet.

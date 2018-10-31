@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Handler;
@@ -17,6 +19,7 @@ import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewDecrease;
     private ImageView imageViewOk;
     private ImageView imageViewSnooze;
+    private ImageView imageViewSound;
 
 
     Timer timer = new Timer();
@@ -82,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
+    Uri currentTone;
+
+
 
 //            = getSharedPreferences("Preferences", Context.MODE_PRIVATE);;
 //    final SharedPreferences.Editor editor = prefs.edit();
@@ -200,8 +208,6 @@ public class MainActivity extends AppCompatActivity {
         }, 0, 500);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE); // la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
@@ -226,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
         imageViewSnooze = (ImageView) findViewById(R.id.imageViewSnooze);
+        imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
 
         constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
@@ -235,6 +242,9 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         editor = prefs.edit();
+
+        currentTone = RingtoneManager.getActualDefaultRingtoneUri(MainActivity.this, RingtoneManager.TYPE_ALARM);
+        Log.d("german0",currentTone.toString());
 
         textViewAlarm1Hour.setText(prefs.getString("hourAlarm1","00"));
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
@@ -371,7 +381,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imageViewSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (padlockClosed == false) { //candado esta abierto
+                    Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+                    startActivityForResult(intent, 0);
+                }
+            }
+        });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        currentTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+    }
+
+    //*****************************FUNCIONES******************************************
 
     //funcion cancelar opcion editar alarmas
     public void CancelEdit () {
@@ -483,7 +512,8 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
 
 
-        player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
+        //player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
+        player = MediaPlayer.create(this, currentTone);
         player.start();
 
         wake.setOnClickListener(new View.OnClickListener() {

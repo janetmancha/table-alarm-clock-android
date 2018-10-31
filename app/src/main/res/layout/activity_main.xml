@@ -99,7 +99,7 @@
         app:srcCompat="@mipmap/ic_plug_foreground" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewColonDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
@@ -139,7 +139,7 @@
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textViewColonDialog"
         android:textColor="@color/white"/>
 
     <TextView
@@ -258,6 +258,21 @@
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Hour"
         app:layout_constraintStart_toEndOf="@+id/imageViewOk"
         app:srcCompat="@mipmap/ic_decrease_foreground" />
+
+    <ImageView
+        android:id="@+id/imageViewSnooze"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewAlarm1"
+        app:layout_constraintStart_toStartOf="@+id/textViewHour"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPadlock"
+        app:layout_constraintVertical_bias="0.504"
+        app:srcCompat="@mipmap/ic_snooze_foreground"
+        android:visibility="invisible"/>
 
 
 </android.support.constraint.ConstraintLayout>

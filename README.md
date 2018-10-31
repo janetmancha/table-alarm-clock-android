@@ -2,9 +2,9 @@
 
 ## CHANGE LOG
 
-- Alarmas: Poner la alarma con melodía y que suene a la hora elegida si esta activada, modo normal y modo snooze
+- Alarmas: Poner la alarma con melodía y que suene a la hora elegida si esta activada, modo normal y modo snooze.
 - pantalla siempre encedida aunque dispositivo no esté enchufado.
-- Eliminar barra de notificaciones
+- Eliminar barra de notificaciones.
 - la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
 - Alarma; - Recordar las alarmas cuando se arrarca aplicacion (Hora y activacion). Pista: en preferencias.
 - Alarmas: - Implementar el aumento y disminucion de horas y minutos de las alarmas.
@@ -31,7 +31,8 @@
 
 - Hacer Layout completo.
 - Hacer Layout solo hora.
-- Implementar opcion de cambiar sonido de alarma
+- Implementar opcion de cambiar sonido de alarma.
+- Implementar boton snooze.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
 - Hacer layout para Tablet.

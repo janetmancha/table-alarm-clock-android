@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewIncrease;
     private ImageView imageViewDecrease;
     private ImageView imageViewOk;
+    private ImageView imageViewSnooze;
 
 
     Timer timer = new Timer();
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewIncrease = (ImageView) findViewById(R.id.imageViewIncrease);
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
+        imageViewSnooze = (ImageView) findViewById(R.id.imageViewSnooze);
 
         constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
@@ -359,6 +361,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imageViewSnooze.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.stop();
+                snoozeAlarmHour = null;
+                snoozeAlarmMinutes = null;
+                imageViewSnooze.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
     //funcion cancelar opcion editar alarmas
@@ -459,6 +471,12 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView sleep = (ImageView) viewInflated.findViewById(R.id.imageViewSleep);
         ImageView wake = (ImageView) viewInflated.findViewById(R.id.imageViewWake);
+        TextView hour = (TextView) viewInflated.findViewById(R.id.textViewHourDialog);
+        TextView minutes = (TextView) viewInflated.findViewById(R.id.textViewMinutesDialog);
+        TextView colon = (TextView) viewInflated.findViewById(R.id.textViewColonDialog);
+
+        hour.setText(textViewHour.getText());
+        minutes.setText(textViewMinutes.getText());
 
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -473,6 +491,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 player.stop();
                 dialog.cancel();
+                imageViewSnooze.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -483,11 +502,13 @@ public class MainActivity extends AppCompatActivity {
                 Date date = new Date();
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date); //tuFechaBase es un Date;
-                calendar.add(Calendar.MINUTE, 2); //minutosASumar es int.
+                calendar.add(Calendar.MINUTE, 1); //minutosASumar es int.
                 Date fechaSalida = calendar.getTime();
 
                 snoozeAlarmHour = FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY));
                 snoozeAlarmMinutes = FormatTwoDigits(calendar.get(Calendar.MINUTE));
+
+                imageViewSnooze.setVisibility(View.VISIBLE);
 
                 player.stop();
                 dialog.cancel();

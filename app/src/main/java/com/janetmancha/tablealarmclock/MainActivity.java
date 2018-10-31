@@ -80,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
     String snoozeAlarmMinutes;
 
     private SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
+//            = getSharedPreferences("Preferences", Context.MODE_PRIVATE);;
+//    final SharedPreferences.Editor editor = prefs.edit();
 
 
 
@@ -225,8 +228,11 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
 
+//        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+//        final SharedPreferences.Editor editor = prefs.edit();
+
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = prefs.edit();
+        editor = prefs.edit();
 
         textViewAlarm1Hour.setText(prefs.getString("hourAlarm1","00"));
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
@@ -329,12 +335,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
-                editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
-                editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
-                editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
-                editor.commit();
-                //editor.apply();
+//                editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
+//                editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
+//                editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
+//                editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
+//                editor.commit();
+//                //editor.apply();
                 CancelEdit();
             }
         });
@@ -363,6 +369,14 @@ public class MainActivity extends AppCompatActivity {
             imageViewIncrease.setVisibility(View.INVISIBLE);
             imageViewDecrease.setVisibility(View.INVISIBLE);
             imageViewOk.setVisibility(View.INVISIBLE);
+
+
+            editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
+            editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
+            editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
+            editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
+            editor.commit();
+            //editor.apply();
         }
     }
 
@@ -472,8 +486,8 @@ public class MainActivity extends AppCompatActivity {
                 calendar.add(Calendar.MINUTE, 2); //minutosASumar es int.
                 Date fechaSalida = calendar.getTime();
 
-                textViewAlarm1Hour.setText(FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
-                textViewAlarm1Minutes.setText(FormatTwoDigits(calendar.get(Calendar.MINUTE)));
+                snoozeAlarmHour = FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY));
+                snoozeAlarmMinutes = FormatTwoDigits(calendar.get(Calendar.MINUTE));
 
                 player.stop();
                 dialog.cancel();

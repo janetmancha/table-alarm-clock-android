@@ -170,7 +170,7 @@
         android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_padlock_block_foreground" />
+        app:srcCompat="@mipmap/ic_padlock_open_foreground" />
 
     <TextView
         android:id="@+id/textViewbanner"

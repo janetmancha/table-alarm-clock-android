@@ -42,8 +42,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     //Elementos UI
     private ConstraintLayout constraintLayout;
     private TextView textViewHour;
@@ -54,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewAlarm2Hour;
     private TextView textViewAlarm1Minutes;
     private TextView textViewAlarm2Minutes;
-
     private ImageView imageViewPlug;
     private ImageView imageViewPadlock;
     private ImageView imageViewAlarm1;
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewOk;
     private ImageView imageViewSnooze;
     private ImageView imageViewSound;
-
+    private TextView textViewAlarmEdit;
 
     Timer timer = new Timer();
     Timer timerIcon = new Timer();
@@ -74,27 +71,16 @@ public class MainActivity extends AppCompatActivity {
     boolean padlockClosed = true;
     boolean alarm1Activate;
     boolean alarm2Activate;
-
-    Boolean alarm = false;
-
-    TextView textViewAlarmEdit;
-
-    MediaPlayer player;
-
     String snoozeAlarmHour;
     String snoozeAlarmMinutes;
+    Boolean alarm = false;
+
+    MediaPlayer player;
 
     private SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
     Uri currentTone;
-
-
-
-//            = getSharedPreferences("Preferences", Context.MODE_PRIVATE);;
-//    final SharedPreferences.Editor editor = prefs.edit();
-
-
 
 //    public Handler timeHandler = new Handler() {
 //        public void handleMessage(Message msg) {
@@ -236,15 +222,17 @@ public class MainActivity extends AppCompatActivity {
 
         constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
-
-//        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-//        final SharedPreferences.Editor editor = prefs.edit();
-
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         editor = prefs.edit();
 
-        currentTone = RingtoneManager.getActualDefaultRingtoneUri(MainActivity.this, RingtoneManager.TYPE_ALARM);
-        Log.d("german0",currentTone.toString());
+//        currentTone = RingtoneManager.getActualDefaultRingtoneUri(MainActivity.this, RingtoneManager.TYPE_ALARM);
+//        Log.d("german0",currentTone.toString());
+
+        String tone= prefs.getString("currenTone",
+                RingtoneManager.getActualDefaultRingtoneUri
+                        (MainActivity.this, RingtoneManager.TYPE_ALARM).toString());
+
+        currentTone = Uri.parse(tone);
 
         textViewAlarm1Hour.setText(prefs.getString("hourAlarm1","00"));
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
@@ -398,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         currentTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+        editor.putString("currenTone", currentTone.toString());
     }
 
     //*****************************FUNCIONES******************************************

@@ -211,7 +211,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //ocultar barra de notificaciones versiones 4.1 y superiores para inferiores cambiado style en manifest
         if (Build.VERSION.SDK_INT > 16) { getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); }
-        //setTheme(R.style.AppThemeNoBarCursive);
+
+        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        editor = prefs.edit();
+
+        //setTheme(getIntent().getIntExtra("theme",R.style.AppThemeNoBarCursive));
+        setTheme(prefs.getInt("theme",R.style.AppThemeNoBarCursive));
+
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -235,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
 
         //constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
-        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-        editor = prefs.edit();
+//        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+//        editor = prefs.edit();
 
         currentTone = Uri.parse(prefs.getString("currenTone",
                 RingtoneManager.getActualDefaultRingtoneUri
@@ -382,9 +388,14 @@ public class MainActivity extends AppCompatActivity {
         imageViewEditTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //getApplication().setTheme(R.style.AppThemeNoBar);
-
+                Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                switch (prefs.getInt("theme",R.style.AppThemeNoBarCursive)){
+                    case R.style.AppThemeNoBarCursive: editor.putInt("theme",R.style.AppThemeNoBarCasual);break;
+                    case R.style.AppThemeNoBarCasual: editor.putInt("theme",R.style.AppThemeNoBarSerif);break;
+                    case R.style.AppThemeNoBarSerif: editor.putInt("theme",R.style.AppThemeNoBarCursive);break;
+                }
+                editor.commit();
+                startActivity(intent);
             }
         });
 

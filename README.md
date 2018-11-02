@@ -2,6 +2,10 @@
 
 ## CHANGE LOG
 
+- Preparar distintos temas de colores de letra y botón para que vayan cambiando.
+- Implementar opción de modificar tema, donde irán cambiando 
+    el color de fondo de pantalla y las letras y guarlarlo en preferencias.
+- Hacer Layout completo.
 - Implementar opcion de cambiar sonido de alarma, guardar tono alarma en preferencias.
 - Alarmas: - Implementar boton snooze.
 - Alarmas: Poner la alarma con melodía y que suene a la hora elegida si esta activada, modo normal y modo snooze.
@@ -30,9 +34,6 @@
 
 ## ROADMAP
 
-- Hacer Layout completo.
-- Preparar distintos temas de colores de letra y botón para que vayan cambiando.
-- Implementar opción de modificar tema, donde irán cambiando el color de fondo de pantalla y las letras.
 - Hacer layout para Tablet.
 - Poner publicidad.
 - Hacer capturas de pantalla de la aplicación.

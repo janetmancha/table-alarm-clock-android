@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/black"
-
     >
 
 
@@ -16,11 +14,9 @@
         android:layout_width="0dp"
         android:layout_height="225sp"
         android:clickable="false"
-        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="21"
         android:textAlignment="textEnd"
-        android:textColor="@color/white"
         android:textSize="220sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm1Minutes"
         app:layout_constraintEnd_toStartOf="@+id/textViewColon"
@@ -31,28 +27,24 @@
         android:id="@+id/textViewColon"
         android:layout_width="wrap_content"
         android:layout_height="220dp"
-        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         android:text=":"
-        android:textColor="@color/white"
+        android:textAlignment="center"
         android:textSize="220sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textAlignment="center"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewMinutes"
         android:layout_width="0dp"
         android:layout_height="225sp"
-        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="35"
         android:textAlignment="gravity"
-        android:textColor="@color/white"
         android:textSize="220sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +55,6 @@
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:includeFontPadding="false"
         android:text="TextView"
         android:textAlignment="center"
@@ -71,8 +62,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewColon"
-        android:textColor="@color/white"/>
+        app:layout_constraintTop_toTopOf="@+id/textViewColon" />
 
     <ImageView
         android:id="@+id/imageViewAlarm1"
@@ -106,8 +96,7 @@
         android:text=":"
         android:textSize="36sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
-        app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Hour"
-        android:textColor="@color/white"/>
+        app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Hour" />
 
     <TextView
         android:id="@+id/textView7"
@@ -117,8 +106,7 @@
         android:text=":"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes"
-        android:textColor="@color/white"/>
+        app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes" />
 
     <TextView
         android:id="@+id/textViewAlarm1Hour"
@@ -128,8 +116,7 @@
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
-        app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1"
-        android:textColor="@color/white"/>
+        app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1" />
 
     <TextView
         android:id="@+id/textViewAlarm1Minutes"
@@ -139,8 +126,7 @@
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
-        app:layout_constraintStart_toEndOf="@+id/textViewColonDialog"
-        android:textColor="@color/white"/>
+        app:layout_constraintStart_toEndOf="@+id/textViewColonDialog" />
 
     <TextView
         android:id="@+id/textViewAlarm2Hour"
@@ -150,19 +136,17 @@
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Minutes"
-        app:layout_constraintEnd_toStartOf="@+id/textView7"
-        android:textColor="@color/white"/>
+        app:layout_constraintEnd_toStartOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textViewAlarm2Minutes"
-        android:layout_width="44dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2"
-        android:textColor="@color/white"/>
+        app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2" />
 
     <ImageView
         android:id="@+id/imageViewPadlock"
@@ -187,7 +171,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewEditColor"
+        android:id="@+id/imageViewEditTheme"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"

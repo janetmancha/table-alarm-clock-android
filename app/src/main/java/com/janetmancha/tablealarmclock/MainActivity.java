@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewSnooze;
     private ImageView imageViewSound;
     private TextView textViewAlarmEdit;
+    private ImageView imageViewEditTheme;
 
     Timer timer = new Timer();
     Timer timerIcon = new Timer();
@@ -209,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //ocultar barra de notificaciones versiones 4.1 y superiores para inferiores cambiado style en manifest
         if (Build.VERSION.SDK_INT > 16) { getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); }
+        //setTheme(R.style.AppThemeNoBarCursive);
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -228,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
         imageViewSnooze = (ImageView) findViewById(R.id.imageViewSnooze);
         imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
+        imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
 
         //constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
@@ -375,6 +379,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imageViewEditTheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //getApplication().setTheme(R.style.AppThemeNoBar);
+
+            }
+        });
+
         imageViewSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -391,9 +404,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        currentTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        editor.putString("currenTone", currentTone.toString());
+        if (resultCode == -1) {
+            currentTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            editor.putString("currenTone", currentTone.toString());
+        }
     }
+
+
 
     //*****************************FUNCIONES******************************************
 

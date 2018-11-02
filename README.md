@@ -34,6 +34,7 @@
 
 ## ROADMAP
 
+- Implementar opcion boton prolongado en sumar y restar.
 - Hacer layout para Tablet.
 - Poner publicidad.
 - Hacer capturas de pantalla de la aplicación.

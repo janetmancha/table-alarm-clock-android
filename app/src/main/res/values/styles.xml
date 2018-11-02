@@ -13,7 +13,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AppThemeNoBarCursive"  parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeNoBarBlack"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:colorBackground">@color/black</item>
@@ -22,7 +22,7 @@
         <item name="android:fontFamily">cursive</item>
     </style>
 
-    <style name="AppThemeNoBarSerif"  parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeNoBarRed"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:colorBackground">@color/darRed</item>
@@ -31,13 +31,22 @@
         <item name="android:fontFamily">serif</item>
     </style>
 
-    <style name="AppThemeNoBarCasual"  parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeNoBarGreen"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:colorBackground">@color/darkGreen</item>
         <item name="android:windowBackground">@color/darkGreen</item>
         <item name="android:textColor">@color/green</item>
         <item name="android:fontFamily">casual</item>
+    </style>
+
+    <style name="AppThemeNoBarWhite"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">cursive</item>
     </style>
 
 </resources>

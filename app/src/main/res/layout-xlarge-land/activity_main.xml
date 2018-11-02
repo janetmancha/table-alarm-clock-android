@@ -12,13 +12,14 @@
     <TextView
         android:id="@+id/textViewHour"
         android:layout_width="0dp"
-        android:layout_height="225sp"
+        android:layout_height="400sp"
+        android:layout_marginBottom="8dp"
         android:clickable="false"
         android:includeFontPadding="false"
         android:text="21"
         android:textAlignment="textEnd"
-        android:textSize="205sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAlarm1Minutes"
+        android:textSize="350sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toStartOf="@+id/textViewColon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,28 +27,28 @@
     <TextView
         android:id="@+id/textViewColon"
         android:layout_width="wrap_content"
-        android:layout_height="225sp"
+        android:layout_height="400sp"
         android:includeFontPadding="false"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         android:text=":"
         android:textAlignment="center"
-        android:textSize="210sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
+        android:textSize="350sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewMinutes"
         android:layout_width="0dp"
-        android:layout_height="225sp"
+        android:layout_height="400sp"
+        android:layout_marginBottom="8dp"
         android:includeFontPadding="false"
         android:text="36"
         android:textAlignment="gravity"
-        android:textSize="205sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAlarm2Hour"
+        android:textSize="350sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewColon"
         app:layout_constraintTop_toTopOf="parent" />
@@ -59,33 +60,36 @@
         android:includeFontPadding="false"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewColon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewAlarm1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHour"
         app:srcCompat="@mipmap/ic_bell_off_foreground" />
 
     <ImageView
         android:id="@+id/imageViewAlarm2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMinutes"
         app:srcCompat="@mipmap/ic_bell_off_foreground" />
 
     <ImageView
         android:id="@+id/imageViewPlug"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_plug_foreground" />
@@ -96,7 +100,7 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text=":"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
         app:layout_constraintStart_toEndOf="@+id/textViewAlarm1Hour" />
 
@@ -106,7 +110,7 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text=":"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toStartOf="@+id/textViewAlarm2Minutes" />
 
@@ -116,9 +120,10 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
-        app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1"
+        app:layout_constraintTop_toTopOf="@+id/textViewAlarm1Minutes" />
 
     <TextView
         android:id="@+id/textViewAlarm1Minutes"
@@ -126,34 +131,34 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm1Hour"
         app:layout_constraintStart_toEndOf="@+id/textViewColonDialog" />
 
     <TextView
         android:id="@+id/textViewAlarm2Hour"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlarm2Minutes"
         app:layout_constraintEnd_toStartOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textViewAlarm2Minutes"
-        android:layout_width="wrap_content"
+        android:layout_width="106dp"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="00"
-        android:textSize="36sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintEnd_toStartOf="@+id/imageViewAlarm2" />
 
     <ImageView
         android:id="@+id/imageViewPadlock"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_padlock_open_foreground" />
@@ -174,13 +179,8 @@
 
     <ImageView
         android:id="@+id/imageViewEditTheme"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewbanner"
         app:layout_constraintStart_toStartOf="parent"
@@ -189,13 +189,8 @@
 
     <ImageView
         android:id="@+id/imageViewSound"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewbanner"
@@ -204,8 +199,8 @@
 
     <ImageView
         android:id="@+id/imageViewOk"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -219,8 +214,8 @@
 
     <ImageView
         android:id="@+id/imageViewIncrease"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -234,8 +229,8 @@
 
     <ImageView
         android:id="@+id/imageViewDecrease"
-        android:layout_width="43dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -248,18 +243,18 @@
 
     <ImageView
         android:id="@+id/imageViewSnooze"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/imageViewAlarm1"
         app:layout_constraintStart_toStartOf="@+id/textViewHour"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPadlock"
         app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@mipmap/ic_snooze_foreground"
-        android:visibility="invisible"/>
+        app:srcCompat="@mipmap/ic_snooze_foreground" />
 
 
 </android.support.constraint.ConstraintLayout>

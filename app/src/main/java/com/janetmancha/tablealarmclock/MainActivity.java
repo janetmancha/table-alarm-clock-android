@@ -211,13 +211,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //ocultar barra de notificaciones versiones 4.1 y superiores para inferiores cambiado style en manifest
         if (Build.VERSION.SDK_INT > 16) { getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); }
-
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         editor = prefs.edit();
-
-        //setTheme(getIntent().getIntExtra("theme",R.style.AppThemeNoBarCursive));
-        setTheme(prefs.getInt("theme",R.style.AppThemeNoBarCursive));
-
+        setTheme(prefs.getInt("theme",R.style.AppThemeNoBarBlack));
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -238,8 +234,6 @@ public class MainActivity extends AppCompatActivity {
         imageViewSnooze = (ImageView) findViewById(R.id.imageViewSnooze);
         imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
         imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
-
-        //constraintLayout = (ConstraintLayout) findViewById(R.id.constrainLayoutClock);
 
 //        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 //        editor = prefs.edit();
@@ -389,10 +383,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                switch (prefs.getInt("theme",R.style.AppThemeNoBarCursive)){
-                    case R.style.AppThemeNoBarCursive: editor.putInt("theme",R.style.AppThemeNoBarCasual);break;
-                    case R.style.AppThemeNoBarCasual: editor.putInt("theme",R.style.AppThemeNoBarSerif);break;
-                    case R.style.AppThemeNoBarSerif: editor.putInt("theme",R.style.AppThemeNoBarCursive);break;
+                switch (prefs.getInt("theme",R.style.AppThemeNoBarBlack)){
+                    case R.style.AppThemeNoBarBlack: editor.putInt("theme",R.style.AppThemeNoBarGreen);break;
+                    case R.style.AppThemeNoBarGreen: editor.putInt("theme",R.style.AppThemeNoBarRed);break;
+                    case R.style.AppThemeNoBarRed: editor.putInt("theme",R.style.AppThemeNoBarWhite);break;
+                    case R.style.AppThemeNoBarWhite: editor.putInt("theme",R.style.AppThemeNoBarBlack);break;
                 }
                 editor.commit();
                 startActivity(intent);

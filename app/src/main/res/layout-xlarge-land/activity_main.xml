@@ -45,7 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="550sp"
         android:includeFontPadding="false"
-        android:text="36"
+        android:text="26"
         android:textAlignment="gravity"
         android:textSize="400sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
@@ -120,6 +120,8 @@
         android:includeFontPadding="false"
         android:text="00"
         android:textSize="80sp"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintBottom_toTopOf="@+id/textViewbanner"
         app:layout_constraintStart_toEndOf="@+id/imageViewAlarm1" />
 

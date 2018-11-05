@@ -44,7 +44,6 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     //Elementos UI
-    private ConstraintLayout constraintLayout;
     private TextView textViewHour;
     private TextView textViewMinutes;
     private TextView textViewColon;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     boolean alarm2Activate;
     String snoozeAlarmHour;
     String snoozeAlarmMinutes;
-    Boolean snoozeActivate = false;
+    boolean snoozeActivate;
 
     MediaPlayer player;
 
@@ -101,15 +100,9 @@ public class MainActivity extends AppCompatActivity {
             timeFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
             Calendar calendar = Calendar.getInstance();
 
-
             int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
             int second = calendar.get(Calendar.SECOND);
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int dayWeek= calendar.get(calendar.DAY_OF_WEEK);
-
 
             textViewHour.setText(FormatTwoDigits(hours));
             textViewMinutes.setText(FormatTwoDigits(minutes));
@@ -122,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 textViewColon.setVisibility(TextView.INVISIBLE);
                 points = false;
             }
-
 
             if (second == 0 && (
                 IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(),alarm1Activate) ||
@@ -214,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         editor = prefs.edit();
         setTheme(prefs.getInt("theme",R.style.AppThemeNoBarBlack));
+//        snoozeActivate = prefs.getBoolean("snoozeActivate",false);
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -235,9 +228,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
         imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
 
-//        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-//        editor = prefs.edit();
-
+        //Coger preferencias
         currentTone = Uri.parse(prefs.getString("currenTone",
                 RingtoneManager.getActualDefaultRingtoneUri
                         (MainActivity.this, RingtoneManager.TYPE_ALARM).toString()));
@@ -247,27 +238,17 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
 
         alarm1Activate = prefs.getBoolean("alarm1Activate",false);
-        if (alarm1Activate == true) {
-            imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
-        } else {
-            imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
-        }
+        ShowIcon(alarm1Activate,R.mipmap.ic_bell_on_foreground,R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
 
         alarm2Activate = prefs.getBoolean("alarm2Activate",false);
-        if (alarm2Activate == true) {
-            imageViewAlarm2.setImageResource(R.mipmap.ic_bell_on_foreground);
-        } else {
-            imageViewAlarm2.setImageResource(R.mipmap.ic_bell_off_foreground);
-        }
+        ShowIcon(alarm2Activate,R.mipmap.ic_bell_on_foreground,R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
 
         padlockClosed = prefs.getBoolean("padlockClosed",false);
-        if(padlockClosed == true) {//candato cerrado
-            imageViewPadlock.setImageResource(R.mipmap.ic_padlock_block_foreground);
-        } else {
-            imageViewPadlock.setImageResource(R.mipmap.ic_padlock_open_foreground);
-        }
+        ShowIcon(padlockClosed,R.mipmap.ic_padlock_block_foreground,R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
 
+     //   snoozeActivate = prefs.getBoolean("snoozeActivate",false);
 
+        //onclick botones
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -376,21 +357,34 @@ public class MainActivity extends AppCompatActivity {
                 snoozeAlarmMinutes = null;
                 snoozeActivate = false;
                 imageViewSnooze.setVisibility(View.INVISIBLE);
+//                editor.putBoolean("snoozeActivate",snoozeActivate);
+//                editor.commit();
             }
         });
 
         imageViewEditTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                switch (prefs.getInt("theme",R.style.AppThemeNoBarBlack)){
-                    case R.style.AppThemeNoBarBlack: editor.putInt("theme",R.style.AppThemeNoBarGreen);break;
-                    case R.style.AppThemeNoBarGreen: editor.putInt("theme",R.style.AppThemeNoBarRed);break;
-                    case R.style.AppThemeNoBarRed: editor.putInt("theme",R.style.AppThemeNoBarWhite);break;
-                    case R.style.AppThemeNoBarWhite: editor.putInt("theme",R.style.AppThemeNoBarBlack);break;
+                 if (padlockClosed == false) { //candado esta abierto
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    switch (prefs.getInt("theme", R.style.AppThemeNoBarBlack)) {
+                        case R.style.AppThemeNoBarBlack:
+                            editor.putInt("theme", R.style.AppThemeNoBarGreen);
+                            break;
+                        case R.style.AppThemeNoBarGreen:
+                            editor.putInt("theme", R.style.AppThemeNoBarRed);
+                            break;
+                        case R.style.AppThemeNoBarRed:
+                            editor.putInt("theme", R.style.AppThemeNoBarWhite);
+                            break;
+                        case R.style.AppThemeNoBarWhite:
+                            editor.putInt("theme", R.style.AppThemeNoBarBlack);
+                            break;
+                    }
+                    //editor.putBoolean("snoozeActivate",snoozeActivate);
+                    editor.commit();
+                    startActivity(intent);
                 }
-                editor.commit();
-                startActivity(intent);
             }
         });
 
@@ -416,10 +410,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    //*****************************FUNCIONES******************************************
-
     //funcion cancelar opcion editar alarmas
     public void CancelEdit () {
         if (textViewAlarmEdit !=null) {
@@ -428,7 +418,6 @@ public class MainActivity extends AppCompatActivity {
             imageViewIncrease.setVisibility(View.INVISIBLE);
             imageViewDecrease.setVisibility(View.INVISIBLE);
             imageViewOk.setVisibility(View.INVISIBLE);
-
 
             editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
             editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
@@ -456,10 +445,6 @@ public class MainActivity extends AppCompatActivity {
     //funcion para poner dos digitos en la hora, minutos
     public String FormatTwoDigits (int num) {
         return (num >=0 && num<=9) ? "0" + num : num + "";
-//        if (num >=0 && num<=9){
-//            return "0"+num;
-//        }
-//        return num + "";
    }
 
    //funcion sumar textViews Alarmas
@@ -467,7 +452,6 @@ public class MainActivity extends AppCompatActivity {
         if (textViewAlarmEdit != null){
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num + 1;
-
             if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
                 if (num == 24) {
                     num = 0;
@@ -488,7 +472,6 @@ public class MainActivity extends AppCompatActivity {
         if (textViewAlarmEdit != null){
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num -1;
-
             if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
                 if (num < 0){
                     num = 23;
@@ -525,7 +508,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
 
-        //player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
         player = MediaPlayer.create(this, currentTone);
         player.start();
 
@@ -536,6 +518,8 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
                 imageViewSnooze.setVisibility(View.INVISIBLE);
                 snoozeActivate = false;
+//                editor.putBoolean("snoozeActivate",snoozeActivate);
+//                editor.commit();
             }
         });
 
@@ -552,11 +536,14 @@ public class MainActivity extends AppCompatActivity {
                 snoozeAlarmHour = FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY));
                 snoozeAlarmMinutes = FormatTwoDigits(calendar.get(Calendar.MINUTE));
                 snoozeActivate = true;
+//                editor.putBoolean("snoozeActivate",snoozeActivate);
+//                editor.commit();
 
                 imageViewSnooze.setVisibility(View.VISIBLE);
 
                 player.stop();
                 dialog.cancel();
+
             }
         });
 
@@ -567,4 +554,14 @@ public class MainActivity extends AppCompatActivity {
                textViewMinutes.getText().equals(minutes) &&
                alarmActivate;
     }
+
+    public void ShowIcon(boolean activate,int iconTrue, int iconFalse, ImageView imageView){
+        if (activate == true){
+            imageView.setImageResource(iconTrue);
+        }
+        else {
+            imageView.setImageResource(iconFalse);
+        }
+    }
+
 }

@@ -2,6 +2,7 @@
 
 ## CHANGE LOG
 
+- Hacer layout para Tablet.
 - Preparar distintos temas de colores de letra y botón para que vayan cambiando.
 - Implementar opción de modificar tema, donde irán cambiando 
     el color de fondo de pantalla y las letras y guarlarlo en preferencias.
@@ -35,7 +36,6 @@
 ## ROADMAP
 
 - Implementar opcion boton prolongado en sumar y restar.
-- Hacer layout para Tablet.
 - Poner publicidad.
 - Hacer capturas de pantalla de la aplicación.
 - Preparar descripción para play store.

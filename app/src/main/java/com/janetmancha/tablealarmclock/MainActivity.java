@@ -69,30 +69,27 @@ public class MainActivity extends AppCompatActivity {
     Timer timerIcon = new Timer();
     SimpleDateFormat timeFormat;
 
-    boolean padlockClosed;
-
-    MediaPlayer player;
-
     private SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
+    MediaPlayer player;
     Uri currentTone;
+
+    boolean padlockClosed;
 
     public Handler timeHandler = new Handler() {
         public void handleMessage(Message msg) {
             final Date date = new Date();
             timeFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
             Calendar calendar = Calendar.getInstance();
-
             int hours = calendar.get(Calendar.HOUR_OF_DAY); // formato 24 horas, .HOUR seria formato 12 horas
             int minutes = calendar.get(Calendar.MINUTE);
             int second = calendar.get(Calendar.SECOND);
-
             textViewHour.setText(FormatTwoDigits(hours));
             textViewMinutes.setText(FormatTwoDigits(minutes));
             textViewDate.setText(timeFormat.format(calendar.getTime()));
-            textViewColon.setVisibility(textViewColon.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
-
+            textViewColon.setVisibility(textViewColon.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE ); //pintar los dos puntos cada segundo
+            //comprobar en el segundo 0 de cada minuto si tiene que sonar la alarma
             if (second == 0 && (
                 IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(), prefs.getBoolean("alarm1Activate", false)) ||
                 IsAlarmNow(textViewAlarm2Hour.getText().toString(),textViewAlarm2Minutes.getText().toString(), prefs.getBoolean("alarm2Activate", false)) ||
@@ -105,35 +102,26 @@ public class MainActivity extends AppCompatActivity {
 
     public Handler timeHandlerIcon = new Handler() {
         public void handleMessage(Message msg) {
-
-            //saber si esta enchufado a la red por usb o un gargador de corriente alterna
+            //comprobacion si esta enchufado a la red por usb o un gargador de corriente alterna
             IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
             Intent batteryStatus = getBaseContext().registerReceiver(null, ifilter);
             int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
             boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
             boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
             if (usbCharge == false && acCharge == false){
-                if (imageViewPlug.getVisibility() == View.VISIBLE ){
-                    imageViewPlug.setVisibility(View.INVISIBLE);
-                } else {
-                    imageViewPlug.setVisibility(View.VISIBLE);
-                }
-
+                imageViewPlug.setVisibility(imageViewPlug.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
             } else {
                 imageViewPlug.setVisibility(View.VISIBLE);
             }
-
             //textview alarma modificandose
             if (textViewAlarmEdit != null){
                 textViewAlarmEdit.setVisibility(textViewAlarmEdit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
                 }
-
-            //if (snoozeActivate){
+            //comprobar si esta activa la opcion snooze
             if (prefs.getBoolean("snoozeActivate",true)){
                 imageViewSnooze.setVisibility(imageViewSnooze.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
             }
         }};
-
 
     public void onPause() {
         super.onPause();  // Always call the superclass method first
@@ -143,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
-
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -197,66 +184,32 @@ public class MainActivity extends AppCompatActivity {
         imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
 
         //Coger preferencias
-        currentTone = Uri.parse(prefs.getString("currenTone",
-                RingtoneManager.getActualDefaultRingtoneUri
-                        (MainActivity.this, RingtoneManager.TYPE_ALARM).toString()));
+        currentTone = Uri.parse(prefs.getString("currenTone", RingtoneManager.getActualDefaultRingtoneUri(MainActivity.this, RingtoneManager.TYPE_ALARM).toString()));
         textViewAlarm1Hour.setText(prefs.getString("hourAlarm1","00"));
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
         textViewAlarm1Minutes.setText(prefs.getString("minutesAlarm1","00"));
         textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
-
         ShowIcon("alarm1Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
         ShowIcon("alarm2Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
         padlockClosed = ShowIcon("padlockClosed", R.mipmap.ic_padlock_block_foreground, R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
 
-        //onclick botones
+        //Onclick botones
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (padlockClosed) { //candato cerrado
-                    imageViewPadlock.setImageResource(R.mipmap.ic_padlock_open_foreground);
-                    padlockClosed = false;
-                } else { //candado abierto
-                    imageViewPadlock.setImageResource(R.mipmap.ic_padlock_block_foreground);
-                    padlockClosed = true;
-                    CancelEdit();
-                }
+                imageViewPadlock.setImageResource(padlockClosed ? R.mipmap.ic_padlock_open_foreground : R.mipmap.ic_padlock_block_foreground);
+                padlockClosed = !padlockClosed;
                 editor.putBoolean("padlockClosed",padlockClosed);
                 editor.commit();
             }
         });
 
-
         iconSetOnClick(imageViewAlarm1, "alarm1Activate");
         iconSetOnClick(imageViewAlarm2, "alarm2Activate");
-
-        textViewAlarm1Hour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickModifiyingAlarm(textViewAlarm1Hour);
-            }
-        });
-
-        textViewAlarm1Minutes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickModifiyingAlarm(textViewAlarm1Minutes);
-            }
-        });
-
-        textViewAlarm2Hour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickModifiyingAlarm(textViewAlarm2Hour);
-            }
-        });
-
-        textViewAlarm2Minutes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClickModifiyingAlarm(textViewAlarm2Minutes);
-            }
-        });
+        textViewAlarmSetOnClick (textViewAlarm1Hour);
+        textViewAlarmSetOnClick (textViewAlarm1Minutes);
+        textViewAlarmSetOnClick (textViewAlarm2Hour);
+        textViewAlarmSetOnClick (textViewAlarm2Minutes);
 
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -347,13 +299,11 @@ public class MainActivity extends AppCompatActivity {
             imageViewIncrease.setVisibility(View.INVISIBLE);
             imageViewDecrease.setVisibility(View.INVISIBLE);
             imageViewOk.setVisibility(View.INVISIBLE);
-
             editor.putString("hourAlarm1", textViewAlarm1Hour.getText().toString());
             editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
             editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
             editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
-            editor.commit();
-            //editor.apply();
+            editor.commit(); //editor.apply();
         }
     }
 
@@ -408,27 +358,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void showAlertDialog () {
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_alarm, null);
         builder.setView(viewInflated);
-
         ImageView sleep = (ImageView) viewInflated.findViewById(R.id.imageViewSleep);
         ImageView wake = (ImageView) viewInflated.findViewById(R.id.imageViewWake);
         TextView hour = (TextView) viewInflated.findViewById(R.id.textViewHourDialog);
         TextView minutes = (TextView) viewInflated.findViewById(R.id.textViewMinutesDialog);
         TextView colon = (TextView) viewInflated.findViewById(R.id.textViewColonDialog);
-
         hour.setText(textViewHour.getText());
         minutes.setText(textViewMinutes.getText());
-
         final AlertDialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-
         player = MediaPlayer.create(this, currentTone);
         player.start();
 
@@ -446,26 +389,20 @@ public class MainActivity extends AppCompatActivity {
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Date date = new Date();
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date); //tuFechaBase es un Date;
+                calendar.setTime(date);
                 calendar.add(Calendar.MINUTE, 1); //minutosASumar es int.
                 Date fechaSalida = calendar.getTime();
-
                 editor.putString("snoozeAlarmHour",FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
                 editor.putString("snoozeAlarmMinutes",FormatTwoDigits(calendar.get(Calendar.MINUTE)));
                 editor.putBoolean("snoozeActivate",true);
                 editor.commit();
-
                 imageViewSnooze.setVisibility(View.VISIBLE);
-
                 player.stop();
                 dialog.cancel();
-
             }
         });
-
     }
 
     public Boolean IsAlarmNow (String hour, String minutes, boolean alarmActivate){
@@ -494,4 +431,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void textViewAlarmSetOnClick (final TextView t) {
+        t.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClickModifiyingAlarm(t);
+            }
+        });
+    }
 }

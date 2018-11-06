@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
         player = MediaPlayer.create(this, currentTone);
-        player.start();
+        if (player != null) player.start();
 
         wake.setOnClickListener(new View.OnClickListener() {
             @Override

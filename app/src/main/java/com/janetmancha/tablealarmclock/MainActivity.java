@@ -1,12 +1,10 @@
 package com.janetmancha.tablealarmclock;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,28 +12,14 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.MutableBoolean;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -189,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm2Hour.setText(prefs.getString("hourAlarm2","00"));
         textViewAlarm1Minutes.setText(prefs.getString("minutesAlarm1","00"));
         textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
-        ShowIcon("alarm1Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
-        ShowIcon("alarm2Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
-        padlockClosed = ShowIcon("padlockClosed", R.mipmap.ic_padlock_block_foreground, R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
+        showIcon("alarm1Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
+        showIcon("alarm2Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
+        padlockClosed = showIcon("padlockClosed", R.mipmap.ic_padlock_block_foreground, R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
 
         //Onclick botones
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
@@ -214,21 +198,21 @@ public class MainActivity extends AppCompatActivity {
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CancelEdit();
+                cancelEdit();
             }
         });
 
         imageViewIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlarmIncrease();
+                alarmIncrease();
             }
         });
 
         imageViewDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlarmDecrease();
+                alarmDecrease();
             }
         });
 
@@ -292,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //funcion cancelar opcion editar alarmas
-    public void CancelEdit () {
+    public void cancelEdit () {
         if (textViewAlarmEdit !=null) {
             textViewAlarmEdit.setVisibility(View.VISIBLE);
             textViewAlarmEdit = null;
@@ -308,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //funcion para que parpadee el textview a modificar de las alarmas
-    public void ClickModifiyingAlarm (TextView textView) {
+    public void clickModifiyingAlarm (TextView textView) {
         if (padlockClosed == false) { //candado esta abierto,
             if (textViewAlarmEdit == null) {
                 textViewAlarmEdit = textView;
@@ -316,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                 imageViewDecrease.setVisibility(View.VISIBLE);
                 imageViewOk.setVisibility(View.VISIBLE);
             } else if (textViewAlarmEdit == textView) {
-                CancelEdit();
+                cancelEdit();
             }
         }
     }
@@ -327,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
    }
 
    //funcion sumar textViews Alarmas
-    public void AlarmIncrease (){
+    public void alarmIncrease (){
         if (textViewAlarmEdit != null){
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num + 1;
@@ -343,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //funcion restar textViews Alarmas
-    public void AlarmDecrease (){
+    public void alarmDecrease (){
         if (textViewAlarmEdit != null){
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num -1;
@@ -411,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
                alarmActivate;
     }
 
-    public boolean ShowIcon(String key, int iconTrue, int iconFalse, ImageView imageView){
+    public boolean showIcon(String key, int iconTrue, int iconFalse, ImageView imageView){
         boolean activate  = prefs.getBoolean(key,false);
         imageView.setImageResource(activate ? iconTrue: iconFalse);
         return activate;
@@ -435,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
         t.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClickModifiyingAlarm(t);
+                clickModifiyingAlarm(t);
             }
         });
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -29,25 +30,12 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     //Elementos UI
-    private TextView textViewHour;
-    private TextView textViewMinutes;
-    private TextView textViewColon;
-    private TextView textViewDate;
-    private TextView textViewAlarm1Hour;
-    private TextView textViewAlarm2Hour;
-    private TextView textViewAlarm1Minutes;
-    private TextView textViewAlarm2Minutes;
-    private ImageView imageViewPlug;
-    private ImageView imageViewPadlock;
-    private ImageView imageViewAlarm1;
-    private ImageView imageViewAlarm2;
-    private ImageView imageViewIncrease;
-    private ImageView imageViewDecrease;
-    private ImageView imageViewOk;
-    private ImageView imageViewSnooze;
-    private ImageView imageViewSound;
+    private TextView textViewDate, textViewHour, textViewMinutes, textViewColon;
+    private TextView textViewAlarm1Hour, textViewAlarm1Minutes;
+    private TextView textViewAlarm2Hour, textViewAlarm2Minutes;
     private TextView textViewAlarmEdit;
-    private ImageView imageViewEditTheme;
+    private ImageView imageViewPlug, imageViewPadlock, imageViewSnooze;
+    private ImageView imageViewIncrease, imageViewDecrease, imageViewOk;
 
     Timer timer = new Timer();
     Timer timerIcon = new Timer();
@@ -92,17 +80,17 @@ public class MainActivity extends AppCompatActivity {
             int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
             boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
             boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
-            if (usbCharge == false && acCharge == false){
+            if (!usbCharge && !acCharge) {
                 imageViewPlug.setVisibility(imageViewPlug.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
             } else {
                 imageViewPlug.setVisibility(View.VISIBLE);
             }
             //textview alarma modificandose
-            if (textViewAlarmEdit != null){
+            if (textViewAlarmEdit != null) {
                 textViewAlarmEdit.setVisibility(textViewAlarmEdit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
-                }
+            }
             //comprobar si esta activa la opcion snooze
-            if (prefs.getBoolean("snoozeActivate",true)){
+            if (prefs.getBoolean("snoozeActivate",true)) {
                 imageViewSnooze.setVisibility(imageViewSnooze.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
             }
         }};
@@ -143,10 +131,15 @@ public class MainActivity extends AppCompatActivity {
         editor = prefs.edit();
         if (getIntent().getBooleanExtra("init", true)) {
             editor.putBoolean("snoozeActivate", false);
-            editor.commit();
+            editor.apply();
         }
         setTheme(prefs.getInt("theme",R.style.AppThemeNoBarBlack));
         setContentView(R.layout.activity_main);
+
+        ImageView imageViewAlarm1 = (ImageView) findViewById(R.id.imageViewAlarm1);
+        ImageView imageViewAlarm2 = (ImageView) findViewById(R.id.imageViewAlarm2);
+        ImageView imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
+        ImageView imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
         textViewMinutes = (TextView) findViewById(R.id.textViewMinutes);
@@ -154,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
         textViewDate = (TextView) findViewById(R.id.textViewDate);
         imageViewPlug = (ImageView) findViewById(R.id.imageViewPlug);
         imageViewPadlock = (ImageView) findViewById(R.id.imageViewPadlock);
-        imageViewAlarm1 = (ImageView) findViewById(R.id.imageViewAlarm1);
-        imageViewAlarm2 = (ImageView) findViewById(R.id.imageViewAlarm2);
         textViewAlarm1Hour = (TextView)findViewById(R.id.textViewAlarm1Hour);
         textViewAlarm1Minutes = (TextView) findViewById(R.id.textViewAlarm1Minutes);
         textViewAlarm2Hour = (TextView) findViewById(R.id.textViewAlarm2Hour);
@@ -164,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
         imageViewDecrease = (ImageView) findViewById(R.id.imageViewDecrease);
         imageViewOk = (ImageView) findViewById(R.id.imageViewOk);
         imageViewSnooze = (ImageView) findViewById(R.id.imageViewSnooze);
-        imageViewSound = (ImageView) findViewById(R.id.imageViewSound);
-        imageViewEditTheme = (ImageView) findViewById(R.id.imageViewEditTheme);
 
         //Coger preferencias
         currentTone = Uri.parse(prefs.getString("currenTone", RingtoneManager.getActualDefaultRingtoneUri(MainActivity.this, RingtoneManager.TYPE_ALARM).toString()));
@@ -184,38 +173,34 @@ public class MainActivity extends AppCompatActivity {
                 imageViewPadlock.setImageResource(padlockClosed ? R.mipmap.ic_padlock_open_foreground : R.mipmap.ic_padlock_block_foreground);
                 padlockClosed = !padlockClosed;
                 editor.putBoolean("padlockClosed",padlockClosed);
-                editor.commit();
+                editor.apply();
+                cancelEdit();
             }
         });
-
         iconSetOnClick(imageViewAlarm1, "alarm1Activate");
         iconSetOnClick(imageViewAlarm2, "alarm2Activate");
         textViewAlarmSetOnClick (textViewAlarm1Hour);
         textViewAlarmSetOnClick (textViewAlarm1Minutes);
         textViewAlarmSetOnClick (textViewAlarm2Hour);
         textViewAlarmSetOnClick (textViewAlarm2Minutes);
-
         imageViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cancelEdit();
             }
         });
-
         imageViewIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alarmIncrease();
             }
         });
-
         imageViewDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alarmDecrease();
             }
         });
-
         imageViewSnooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,10 +209,9 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("snoozeAlarmMinutes",null);
                 editor.putBoolean("snoozeActivate",false);
                 imageViewSnooze.setVisibility(View.INVISIBLE);
-                editor.commit();
+                editor.apply();
             }
         });
-
         imageViewEditTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,12 +232,11 @@ public class MainActivity extends AppCompatActivity {
                             editor.putInt("theme", R.style.AppThemeNoBarBlack);
                             break;
                     }
-                    editor.commit();
+                    editor.apply();
                     startActivity(intent);
                 }
             }
         });
-
         imageViewSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,13 +270,13 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("minutesAlarm1",textViewAlarm1Minutes.getText().toString());
             editor.putString("hourAlarm2",textViewAlarm2Hour.getText().toString());
             editor.putString("minutesAlarm2",textViewAlarm2Minutes.getText().toString());
-            editor.commit(); //editor.apply();
+            editor.apply();
         }
     }
 
     //funcion para que parpadee el textview a modificar de las alarmas
     public void clickModifiyingAlarm (TextView textView) {
-        if (padlockClosed == false) { //candado esta abierto,
+        if (!padlockClosed) { //candado esta abierto,
             if (textViewAlarmEdit == null) {
                 textViewAlarmEdit = textView;
                 imageViewIncrease.setVisibility(View.VISIBLE);
@@ -357,34 +340,31 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
         player = MediaPlayer.create(this, currentTone);
-        if (player != null) player.start();
-
+        player.start();
         wake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                player.stop();
-                dialog.cancel();
-                imageViewSnooze.setVisibility(View.INVISIBLE);
-                editor.putBoolean("snoozeActivate",false);
-                editor.commit();
+            player.stop();
+            dialog.cancel();
+            imageViewSnooze.setVisibility(View.INVISIBLE);
+            editor.putBoolean("snoozeActivate",false);
+            editor.apply();
             }
         });
-
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = new Date();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.add(Calendar.MINUTE, 1); //minutosASumar es int.
-                Date fechaSalida = calendar.getTime();
-                editor.putString("snoozeAlarmHour",FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
-                editor.putString("snoozeAlarmMinutes",FormatTwoDigits(calendar.get(Calendar.MINUTE)));
-                editor.putBoolean("snoozeActivate",true);
-                editor.commit();
-                imageViewSnooze.setVisibility(View.VISIBLE);
-                player.stop();
-                dialog.cancel();
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.MINUTE, 1); //minutosASumar es int.
+            editor.putString("snoozeAlarmHour",FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
+            editor.putString("snoozeAlarmMinutes",FormatTwoDigits(calendar.get(Calendar.MINUTE)));
+            editor.putBoolean("snoozeActivate",true);
+            editor.apply();
+            imageViewSnooze.setVisibility(View.VISIBLE);
+            player.stop();
+            dialog.cancel();
             }
         });
     }
@@ -409,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean b = prefs.getBoolean(key, false);
                     i.setImageResource(b ? R.mipmap.ic_bell_off_foreground : R.mipmap.ic_bell_on_foreground);
                     editor.putBoolean(key, !b);
-                    editor.commit();
+                    editor.apply();
                 }
             }
         });

@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             if (second == 0 && (
                 IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(), prefs.getBoolean("alarm1Activate", false)) ||
                 IsAlarmNow(textViewAlarm2Hour.getText().toString(),textViewAlarm2Minutes.getText().toString(), prefs.getBoolean("alarm2Activate", false)) ||
-                IsAlarmNow(prefs.getString("snoozeAlarmHour",null),prefs.getString("snoozeMinutes",null),prefs.getBoolean("snoozeActivate",false))
+                IsAlarmNow(prefs.getString("snoozeAlarmHour",null),prefs.getString("snoozeAlarmMinutes",null),prefs.getBoolean("snoozeActivate",false))
                 )) {
                 showAlertDialog();
             }

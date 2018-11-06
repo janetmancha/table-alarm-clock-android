@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.MutableBoolean;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -68,13 +69,7 @@ public class MainActivity extends AppCompatActivity {
     Timer timerIcon = new Timer();
     SimpleDateFormat timeFormat;
 
-    boolean points = false;
     boolean padlockClosed;
-    boolean alarm1Activate;
-    boolean alarm2Activate;
-    String snoozeAlarmHour;
-    String snoozeAlarmMinutes;
-    boolean snoozeActivate;
 
     MediaPlayer player;
 
@@ -83,19 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
     Uri currentTone;
 
-//    public Handler timeHandler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            final Date date = new Date();
-//            final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-//            final String timeString = timeFormat.format(date);
-//            textViewTime = (TextView) findViewById(R.id.textViewTime);
-//            textViewTime.setText(timeString);
-//        }
-//    };
-
     public Handler timeHandler = new Handler() {
         public void handleMessage(Message msg) {
-
             final Date date = new Date();
             timeFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
             Calendar calendar = Calendar.getInstance();
@@ -107,29 +91,17 @@ public class MainActivity extends AppCompatActivity {
             textViewHour.setText(FormatTwoDigits(hours));
             textViewMinutes.setText(FormatTwoDigits(minutes));
             textViewDate.setText(timeFormat.format(calendar.getTime()));
-
-            if (points == false){
-                textViewColon.setVisibility(TextView.VISIBLE);
-                points = true;
-            } else {
-                textViewColon.setVisibility(TextView.INVISIBLE);
-                points = false;
-            }
+            textViewColon.setVisibility(textViewColon.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
 
             if (second == 0 && (
-                IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(),alarm1Activate) ||
-                IsAlarmNow(textViewAlarm2Hour.getText().toString(),textViewAlarm2Minutes.getText().toString(),alarm2Activate) ||
-                IsAlarmNow(snoozeAlarmHour,snoozeAlarmMinutes,true)
+                IsAlarmNow(textViewAlarm1Hour.getText().toString(),textViewAlarm1Minutes.getText().toString(), prefs.getBoolean("alarm1Activate", false)) ||
+                IsAlarmNow(textViewAlarm2Hour.getText().toString(),textViewAlarm2Minutes.getText().toString(), prefs.getBoolean("alarm2Activate", false)) ||
+                IsAlarmNow(prefs.getString("snoozeAlarmHour",null),prefs.getString("snoozeMinutes",null),prefs.getBoolean("snoozeActivate",false))
                 )) {
                 showAlertDialog();
             }
-
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //mantener la pantalla siempre encendida
-
         }
     };
-
-
 
     public Handler timeHandlerIcon = new Handler() {
         public void handleMessage(Message msg) {
@@ -153,21 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
             //textview alarma modificandose
             if (textViewAlarmEdit != null){
-                if (textViewAlarmEdit.getVisibility() == View.VISIBLE){
-                    textViewAlarmEdit.setVisibility(View.INVISIBLE);
-                } else {
-                    textViewAlarmEdit.setVisibility(View.VISIBLE);
+                textViewAlarmEdit.setVisibility(textViewAlarmEdit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
                 }
-            }
 
-            if (snoozeActivate == true){
-               if (imageViewSnooze.getVisibility() == View.VISIBLE){
-                   imageViewSnooze.setVisibility(View.INVISIBLE);
-               } else {
-                   imageViewSnooze.setVisibility(View.VISIBLE);
-               }
+            //if (snoozeActivate){
+            if (prefs.getBoolean("snoozeActivate",true)){
+                imageViewSnooze.setVisibility(imageViewSnooze.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE );
             }
-
         }};
 
 
@@ -200,13 +164,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE); // la pantalla gira con el dispositivo pero solo a orientaciones horizontales.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //mantener la pantalla siempre encendida
         super.onCreate(savedInstanceState);
         //ocultar barra de notificaciones versiones 4.1 y superiores para inferiores cambiado style en manifest
         if (Build.VERSION.SDK_INT > 16) { getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); }
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         editor = prefs.edit();
+        if (getIntent().getBooleanExtra("init", true)) {
+            editor.putBoolean("snoozeActivate", false);
+            editor.commit();
+        }
         setTheme(prefs.getInt("theme",R.style.AppThemeNoBarBlack));
-//        snoozeActivate = prefs.getBoolean("snoozeActivate",false);
         setContentView(R.layout.activity_main);
 
         textViewHour =(TextView) findViewById(R.id.textViewHour);
@@ -237,22 +205,15 @@ public class MainActivity extends AppCompatActivity {
         textViewAlarm1Minutes.setText(prefs.getString("minutesAlarm1","00"));
         textViewAlarm2Minutes.setText(prefs.getString("minutesAlarm2","00"));
 
-        alarm1Activate = prefs.getBoolean("alarm1Activate",false);
-        ShowIcon(alarm1Activate,R.mipmap.ic_bell_on_foreground,R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
-
-        alarm2Activate = prefs.getBoolean("alarm2Activate",false);
-        ShowIcon(alarm2Activate,R.mipmap.ic_bell_on_foreground,R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
-
-        padlockClosed = prefs.getBoolean("padlockClosed",false);
-        ShowIcon(padlockClosed,R.mipmap.ic_padlock_block_foreground,R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
-
-     //   snoozeActivate = prefs.getBoolean("snoozeActivate",false);
+        ShowIcon("alarm1Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm1);
+        ShowIcon("alarm2Activate", R.mipmap.ic_bell_on_foreground, R.mipmap.ic_bell_off_foreground,imageViewAlarm2);
+        padlockClosed = ShowIcon("padlockClosed", R.mipmap.ic_padlock_block_foreground, R.mipmap.ic_padlock_open_foreground,imageViewPadlock);
 
         //onclick botones
         imageViewPadlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (padlockClosed == true) { //candato cerrado
+                if (padlockClosed) { //candato cerrado
                     imageViewPadlock.setImageResource(R.mipmap.ic_padlock_open_foreground);
                     padlockClosed = false;
                 } else { //candado abierto
@@ -265,40 +226,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        imageViewAlarm1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (padlockClosed == false) { //candado esta abierto
-                    if (alarm1Activate == true) {
-                        imageViewAlarm1.setImageResource(R.mipmap.ic_bell_off_foreground);
-                        alarm1Activate = false;
-                    } else {
-                        imageViewAlarm1.setImageResource(R.mipmap.ic_bell_on_foreground);
-                        alarm1Activate = true;
-                    }
-                    editor.putBoolean("alarm1Activate",alarm1Activate);
-                    editor.commit();
-                }
 
-            }
-        });
-
-        imageViewAlarm2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (padlockClosed == false) { //candado esta abierto
-                    if (alarm2Activate == true) {
-                        imageViewAlarm2.setImageResource(R.mipmap.ic_bell_off_foreground);
-                        alarm2Activate = false;
-                    } else {
-                        imageViewAlarm2.setImageResource(R.mipmap.ic_bell_on_foreground);
-                        alarm2Activate = true;
-                    }
-                    editor.putBoolean("alarm2Activate",alarm2Activate);
-                    editor.commit();
-                }
-            }
-        });
+        iconSetOnClick(imageViewAlarm1, "alarm1Activate");
+        iconSetOnClick(imageViewAlarm2, "alarm2Activate");
 
         textViewAlarm1Hour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -352,21 +282,21 @@ public class MainActivity extends AppCompatActivity {
         imageViewSnooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                player.stop();
-                snoozeAlarmHour = null;
-                snoozeAlarmMinutes = null;
-                snoozeActivate = false;
+                if (player != null) player.stop();
+                editor.putString("snoozeAlarmHour",null);
+                editor.putString("snoozeAlarmMinutes",null);
+                editor.putBoolean("snoozeActivate",false);
                 imageViewSnooze.setVisibility(View.INVISIBLE);
-//                editor.putBoolean("snoozeActivate",snoozeActivate);
-//                editor.commit();
+                editor.commit();
             }
         });
 
         imageViewEditTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 if (padlockClosed == false) { //candado esta abierto
+                 if (!padlockClosed) { //candado esta abierto
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.putExtra("init", false);
                     switch (prefs.getInt("theme", R.style.AppThemeNoBarBlack)) {
                         case R.style.AppThemeNoBarBlack:
                             editor.putInt("theme", R.style.AppThemeNoBarGreen);
@@ -381,7 +311,6 @@ public class MainActivity extends AppCompatActivity {
                             editor.putInt("theme", R.style.AppThemeNoBarBlack);
                             break;
                     }
-                    //editor.putBoolean("snoozeActivate",snoozeActivate);
                     editor.commit();
                     startActivity(intent);
                 }
@@ -391,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         imageViewSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (padlockClosed == false) { //candado esta abierto
+                if (!padlockClosed) { //candado esta abierto
                     Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                     intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                     intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
@@ -453,14 +382,10 @@ public class MainActivity extends AppCompatActivity {
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num + 1;
             if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
-                if (num == 24) {
-                    num = 0;
-                }
+                if (num == 24) num = 0;
             }
             if (textViewAlarmEdit == textViewAlarm1Minutes || textViewAlarmEdit == textViewAlarm2Minutes){
-                if (num > 59){
-                    num = 0;
-                }
+                if (num > 59) num = 0;
             }
             String resul = FormatTwoDigits(num);
             textViewAlarmEdit.setText(resul);
@@ -473,14 +398,10 @@ public class MainActivity extends AppCompatActivity {
             int num = Integer.parseInt(textViewAlarmEdit.getText().toString());
             num = num -1;
             if (textViewAlarmEdit == textViewAlarm1Hour || textViewAlarmEdit == textViewAlarm2Hour){
-                if (num < 0){
-                    num = 23;
-                }
+                if (num < 0) num = 23;
             }
             if (textViewAlarmEdit == textViewAlarm1Minutes || textViewAlarmEdit == textViewAlarm2Minutes){
-                if (num <0){
-                    num =59;
-                }
+                if (num <0)num =59;
             }
             String resul = FormatTwoDigits(num);
             textViewAlarmEdit.setText(resul);
@@ -517,9 +438,8 @@ public class MainActivity extends AppCompatActivity {
                 player.stop();
                 dialog.cancel();
                 imageViewSnooze.setVisibility(View.INVISIBLE);
-                snoozeActivate = false;
-//                editor.putBoolean("snoozeActivate",snoozeActivate);
-//                editor.commit();
+                editor.putBoolean("snoozeActivate",false);
+                editor.commit();
             }
         });
 
@@ -533,11 +453,10 @@ public class MainActivity extends AppCompatActivity {
                 calendar.add(Calendar.MINUTE, 1); //minutosASumar es int.
                 Date fechaSalida = calendar.getTime();
 
-                snoozeAlarmHour = FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY));
-                snoozeAlarmMinutes = FormatTwoDigits(calendar.get(Calendar.MINUTE));
-                snoozeActivate = true;
-//                editor.putBoolean("snoozeActivate",snoozeActivate);
-//                editor.commit();
+                editor.putString("snoozeAlarmHour",FormatTwoDigits(calendar.get(Calendar.HOUR_OF_DAY)));
+                editor.putString("snoozeAlarmMinutes",FormatTwoDigits(calendar.get(Calendar.MINUTE)));
+                editor.putBoolean("snoozeActivate",true);
+                editor.commit();
 
                 imageViewSnooze.setVisibility(View.VISIBLE);
 
@@ -555,13 +474,24 @@ public class MainActivity extends AppCompatActivity {
                alarmActivate;
     }
 
-    public void ShowIcon(boolean activate,int iconTrue, int iconFalse, ImageView imageView){
-        if (activate == true){
-            imageView.setImageResource(iconTrue);
-        }
-        else {
-            imageView.setImageResource(iconFalse);
-        }
+    public boolean ShowIcon(String key, int iconTrue, int iconFalse, ImageView imageView){
+        boolean activate  = prefs.getBoolean(key,false);
+        imageView.setImageResource(activate ? iconTrue: iconFalse);
+        return activate;
+    }
+
+    public void iconSetOnClick(final ImageView i, final String key) {
+        i.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!padlockClosed) { //candado esta abierto
+                    boolean b = prefs.getBoolean(key, false);
+                    i.setImageResource(b ? R.mipmap.ic_bell_off_foreground : R.mipmap.ic_bell_on_foreground);
+                    editor.putBoolean(key, !b);
+                    editor.commit();
+                }
+            }
+        });
     }
 
 }
